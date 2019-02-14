@@ -44,13 +44,13 @@ export default class Login extends Component {
        height: '100%',
     //  opacity: .5
       }}
-      
-      source={require('../birdbox.jpg')}>
+      // react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+      source={require('../upNorth.jpg')}>
       <StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content'/>
       <View style={{width: '100%', height: '100%', backgroundColor: '#fc730550'}}>
       <ScrollView showsVerticalScrollIndicator={false} overScrollMode={'never'}>
       <View style={{width:150, height: 34, alignSelf: 'center', marginTop: 60, marginBottom: 30}}>
-      <Image resizeMode="contain" style={{width: 150, height: 34, }} source={require('../kalewoW.png')}/>
+      <Image resizeMode="contain" style={{width: 150, height: 34, }} source={require('../canvas.png')}/>
       </View>
       <View style={{height:50,width: '75%', borderBottomColor: 'white', justifyContent: 'space-between',
       borderBottomWidth: 2, alignSelf: 'center',marginBottom: 15, 

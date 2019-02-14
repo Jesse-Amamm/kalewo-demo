@@ -33,7 +33,7 @@ export default class Details extends Component {
         <ImageBackground resizeMode={'cover'} style={{width: '100%', height: 250, paddingBottom: 10
       //  paddingLeft: 10, paddingRight: 10
         }} 
-        source={require('../theLeftovers.jpg')}>
+        source={require('../lionsHeart.jpg')}>
          <View style={{height: 25, width: '95%',alignSelf: 'center',
           marginTop: StatusBar.currentHeight+10,
           flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -52,7 +52,7 @@ export default class Details extends Component {
          showsVerticalScrollIndicator={false}></ScrollView>
          <View style={{flexDirection: 'column', marginLeft: 10}}>
          <Text style={{fontFamily: 'mont-bold', fontSize: 24, color: 'white'}}>
-           The Leftovers(2013-2017)  
+           LionHeart(2018)  
          </Text>
          <Text style={{fontFamily: 'mont', fontSize: 15, color: 'white'}}>
            306, 098 people watched 
@@ -101,12 +101,11 @@ export default class Details extends Component {
         </View>
         <Text style={{fontFamily: 'mont-light', fontSize: 14, color: 'white', marginTop: 18,
         marginLeft: 10,marginRight: 10}}>
-        "The Leftovers starts three years after a global event called the "Sudden Departure", 
-        the inexplicable, simultaneous disappearance of 140 million people, 2% of the world's 
-        population, on October 14, 2011. Following that event, mainstream religions declined, 
-        and a number of cults emerged, most notably the Guilty Remnant, a group of white-clothed, 
-        chain-smoking nihilists, and a cult led by Holy Wayne, a man who views himself as the
-         Second Coming of Jesus Christ."
+        "Lionheart tells the story of Adaeze Obiagu (portrayed by Nnaji), who wants to substitute 
+        for her father, Ernest Obiagu (Pete Edochie), when he can no longer run his company due 
+        to health issues. Her father however asks his brother Godswill (Nkem Owoh) to substitute 
+        for him, and Godswill and Adaeze have to work hard together to save the company from a 
+        huge debt and to not lose the company to the businessman Igwe Pascal (Kanayo O. Kanayo)."
         </Text>
         <View style={{flexDirection: 'row', width: '80%', justifyContent: 'space-between', 
         alignSelf: 'center', marginTop: 15, alignItems: 'center',height: 50}}>
@@ -116,7 +115,7 @@ export default class Details extends Component {
          Length
         </Text>
         <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-         3 seasons
+         95 minutes
         </Text>
         </View>
         <View style={{backgroundColor: '#6D7B8D', width: 3, height: 40, marginTop: 5}}></View>
@@ -126,7 +125,7 @@ export default class Details extends Component {
          Language
         </Text>
         <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-         English
+        English, Igbo
         </Text>
         </View>
         <View style={{backgroundColor: '#6D7B8D', width: 3, height: 40, marginTop: 5, }}></View>
