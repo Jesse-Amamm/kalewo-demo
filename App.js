@@ -22,6 +22,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Login from './components/Login';
 import Home from './components/Home';
 import Details from './components/Details';
+import Splash from './components/Splash';
 import {
   createStackNavigator,
   createAppContainer
@@ -46,13 +47,25 @@ const Screens = createStackNavigator({
 export default class App extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      timePassed: false,
+  };
   }
   render() {
-    return (
-      <Screens/>
-  //  <Home/>
- // <Details/>
-    );
+      setTimeout(() => {
+        this.setState({timePassed: true})
+    }, 4000);
+    if (!this.state.timePassed) {
+        return <View style={{flex: 1, backgroundColor: 'white'}}>
+            <StatusBar backgroundColor='transparent' translucent={true} barStyle='dark-content'/>
+            <Splash/>
+            </View>;
+    } else {
+        return (
+            <Screens/>
+        );
+
+    }
   }
 }
 
