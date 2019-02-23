@@ -23,6 +23,7 @@ import Login from './components/Login';
 import Home from './components/Home';
 import Details from './components/Details';
 import Splash from './components/Splash';
+import VideoComponent from './components/VideoComponent';
 import {
   createStackNavigator,
   createAppContainer
@@ -39,6 +40,9 @@ const Screens = createStackNavigator({
   Films: {
     screen: Home
   },
+  Video:{
+    screen: VideoComponent
+  }
  
 }, {
     initialRouteName: "Home"

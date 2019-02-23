@@ -24,16 +24,19 @@ export default class Details extends Component {
     static navigationOptions = {
         header: null,
         };
+        constructor(props) {
+          super(props);
+      };
   render() {
+    const {params} = this.props.navigation.state;
     return (
     //  <Login/>
     <View style={{flex: 1,backgroundColor: '#000F21'}}>
-    <StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content'/>
-        
-        <ImageBackground resizeMode={'cover'} style={{width: '100%', height: 250, paddingBottom: 10
+    <StatusBar backgroundColor='#000F21' translucent={true} barStyle='light-content'/>
+       {params.image? <ImageBackground resizeMode={'cover'} 
+       style={{width: '100%', height: 250, paddingBottom: 10, //opacity: .5,
       //  paddingLeft: 10, paddingRight: 10
-        }} 
-        source={require('../lionsHeart.jpg')}>
+        }}  source={{uri: params.image}}>
          <View style={{height: 25, width: '95%',alignSelf: 'center',
           marginTop: StatusBar.currentHeight+10,
           flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -51,11 +54,64 @@ export default class Details extends Component {
          <ScrollView showsHorizontalScrollIndicator={false}
          showsVerticalScrollIndicator={false}></ScrollView>
          <View style={{flexDirection: 'column', marginLeft: 10}}>
-         <Text style={{fontFamily: 'mont-bold', fontSize: 24, color: 'white'}}>
-           LionHeart(2018)  
+         <Text style={{fontFamily: 'mont-bold', fontSize: 24, color: '#F2BB66'}}>
+           {params.title}  
          </Text>
-         <Text style={{fontFamily: 'mont', fontSize: 15, color: 'white'}}>
-           306, 098 people watched 
+         <Text style={{fontFamily: 'mont', fontSize: 15, color: '#F2BB66'}}>
+           people are watching 
+         </Text>
+         <View style={{width: 120, flexDirection: 'row', justifyContent: 'space-evenly'}}>
+                        <View style={{width: 22, height: 20, }}>
+                          <Image 
+                          resizeMode="contain" style={{width: 22,height: 20,}}
+                         source={require('../star.png')}/>
+                        </View>
+                        <View style={{width: 22, height: 20, alignContent: 'center', justifyContent: 'center'}}>
+                          <Image 
+                          resizeMode="contain" style={{flex: 1,width: 22,height: 20,}}
+                         source={require('../star.png')}/>
+                        </View>
+                        <View style={{width: 22, height: 20, alignContent: 'center', justifyContent: 'center'}}>
+                          <Image 
+                          resizeMode="contain" style={{flex: 1,width: 22,height: 20,}}
+                         source={require('../star.png')}/>
+                        </View>
+                        <View style={{width: 22, height: 20, alignContent: 'center', justifyContent: 'center'}}>
+                          <Image 
+                          resizeMode="contain" style={{flex: 1,width: 22,height: 20,}}
+                         source={require('../star.png')}/>
+                        </View>
+                        <View style={{width: 22, height: 20, alignContent: 'center', justifyContent: 'center'}}>
+                          <Image 
+                          resizeMode="contain" style={{flex: 1,width: 22,height: 20,}}
+                         source={require('../star.png')}/>
+                        </View>
+                        </View>
+         </View></ImageBackground>:<ImageBackground resizeMode={'cover'} style={{width: '100%', height: 250, paddingBottom: 10
+      //  paddingLeft: 10, paddingRight: 10
+        }}  source={require('../none.jpg')}>
+         <View style={{height: 25, width: '95%',alignSelf: 'center',
+          marginTop: StatusBar.currentHeight+10,
+          flexDirection: 'row', justifyContent: 'space-between'}}>
+         <TouchableNativeFeedback onPress={() =>
+                this.props.navigation.navigate('Films', 
+                )}>
+         <Image resizeMode={'contain'} source={require('../left.png')} style={{width: 22,height: 25}}/>
+         </TouchableNativeFeedback>
+         <TouchableNativeFeedback onPress={() =>
+                this.props.navigation.navigate('Home', 
+                )}>
+         <Image resizeMode={'contain'} source={require('../menu.png')} style={{width: 22,height: 25}}/>
+         </TouchableNativeFeedback>
+         </View>
+         <ScrollView showsHorizontalScrollIndicator={false}
+         showsVerticalScrollIndicator={false}></ScrollView>
+         <View style={{flexDirection: 'column', marginLeft: 10}}>
+         <Text style={{fontFamily: 'mont-bold', fontSize: 24, color: '#F2BB66'}}>
+           {params.title}  
+         </Text>
+         <Text style={{fontFamily: 'mont', fontSize: 15, color: '#F2BB66'}}>
+           people are watching 
          </Text>
          <View style={{width: 120, flexDirection: 'row', justifyContent: 'space-evenly'}}>
                         <View style={{width: 22, height: 20, }}>
@@ -85,7 +141,8 @@ export default class Details extends Component {
                         </View>
                         </View>
          </View>
-        </ImageBackground>
+        </ImageBackground>} 
+        
         <View style={{position: 'absolute',right: 18, top: 250-18, backgroundColor: 'red', 
         width: 36, height: 36, borderRadius: 18, alignItems: 'center', justifyContent: 'center'}}>
          <Text style={{fontFamily: 'mont', fontSize: 30, color: 'white'}}>+</Text>
@@ -101,11 +158,7 @@ export default class Details extends Component {
         </View>
         <Text style={{fontFamily: 'mont-light', fontSize: 14, color: 'white', marginTop: 18,
         marginLeft: 10,marginRight: 10}}>
-        "Lionheart tells the story of Adaeze Obiagu (portrayed by Nnaji), who wants to substitute 
-        for her father, Ernest Obiagu (Pete Edochie), when he can no longer run his company due 
-        to health issues. Her father however asks his brother Godswill (Nkem Owoh) to substitute 
-        for him, and Godswill and Adaeze have to work hard together to save the company from a 
-        huge debt and to not lose the company to the businessman Igwe Pascal (Kanayo O. Kanayo)."
+        "{params.description}"
         </Text>
         <View style={{flexDirection: 'row', width: '80%', justifyContent: 'space-between', 
         alignSelf: 'center', marginTop: 15, alignItems: 'center',height: 50}}>
@@ -115,7 +168,7 @@ export default class Details extends Component {
          Length
         </Text>
         <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-         95 minutes
+         NA
         </Text>
         </View>
         <View style={{backgroundColor: '#6D7B8D', width: 3, height: 40, marginTop: 5}}></View>
@@ -125,7 +178,7 @@ export default class Details extends Component {
          Language
         </Text>
         <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-        English, Igbo
+        NA
         </Text>
         </View>
         <View style={{backgroundColor: '#6D7B8D', width: 3, height: 40, marginTop: 5, }}></View>
@@ -135,7 +188,7 @@ export default class Details extends Component {
          Rating
         </Text>
         <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-         9.0/10
+        NA
         </Text>
         </View>
         </View>
@@ -212,11 +265,14 @@ export default class Details extends Component {
                          source={require('../star.png')}/>
           </View>
       </ScrollView>
+      <TouchableNativeFeedback onPress={() =>
+                this.props.navigation.navigate('Video', {image: params.image, uri: params.uri}
+                )}>
       <View style={{width: '75%', height:50, backgroundColor: 'orange',
       borderRadius: 3, alignItems:'center', alignSelf: 'center',
        justifyContent: 'center', marginTop: 20}}>
            <Text style={{fontSize: 14, color: 'white',fontFamily: 'mont-bold',}}>WATCH NOW</Text>
-       </View>
+       </View></TouchableNativeFeedback>
       </ScrollView>
     </View>
     );

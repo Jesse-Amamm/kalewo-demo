@@ -46,7 +46,7 @@ export default class Login extends Component {
       }}
       // react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
       source={require('../upNorth.jpg')}>
-      <StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content'/>
+      <StatusBar backgroundColor='#000F21' translucent={true} barStyle='light-content'/>
       <View style={{width: '100%', height: '100%', backgroundColor: '#fc730550'}}>
       <ScrollView showsVerticalScrollIndicator={false} overScrollMode={'never'}>
       <View style={{width:150, height: 34, alignSelf: 'center', marginTop: 60, marginBottom: 30}}>
