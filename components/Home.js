@@ -12,22 +12,21 @@ import {
   TouchableNativeFeedback,
   ScrollView,
   Dimensions,
-  FlatList
+  FlatList,
+  Alert
 } from 'react-native';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import axios from 'axios';
 const api_key = '114063_a93666d11c33ea8dccac';
 export default class Home extends Component{
   componentDidMount() {
-    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);  
+      NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectivityChange);
     if(this.state.isConnected){   
     axios.get(
                        'http://api.dacast.com/v2/channel?apikey='+api_key+'&sort=ASC'
-                   ).then((response) => {
-                    
+                   ).then((response) => {   
                     console.log(response);   
                     var len = response.data?response.data.length:null;
-
                     for (let i = 0; i < 4; i++) {
                         let row = response.data.data[i];
                         console.log(row);console.log(i);console.log("djdn")
@@ -46,29 +45,67 @@ export default class Home extends Component{
                       console.log(i);
                       console.log("visual_radio")
                   }
+                  for (let i = 10; i < 11; i++) {
+                    let row = response.data.data[i];
+                    console.log(row);console.log(i);console.log("djdn")
+                    this.setState(prevState => ({
+                        mn: [...prevState.mn, row],
+                    }), console.log(this.state.mn[0]));
+                    console.log(i);
+                    console.log("miss nigeria")
+                }
                   console.log(this.state.visual_radio);
                   this.setState({loading: false});
                    }).catch((error) => {
                     this.setState({loading: false});
                         Alert.alert(
                             'Error',
-                             'Internal Server Error, please try again later',
+                             'Please check your internet connection',
                             [
                               {text: 'OK'},
                             ],  );    
                             console.log(error); 
                            }); 
+ axios.get(
+                            'http://api.dacast.com//v2/vod?apikey='+api_key
+                        ).then((response) => {   
+                         console.log(response);   
+                         var len = response.data.data?response.data.data.length:null;
+                         for (let i = 0; i < len; i++) {
+                             let row = response.data.data[i];
+                             console.log(row);console.log(i);console.log("djdn")
+                             if(row.title.toLowerCase().indexOf('live recording') >= 0){
+                               console.log("it includes");
+                             this.setState(prevState => ({
+                                 mn: [...prevState.mn, row],
+                             }), console.log(this.state.mn[0]));  
+                             }else{
+                              this.setState(prevState => ({
+                                mnh: [...prevState.mnh, row],
+                            }), console.log(this.state.mnh[0]));    
+                             };
+                         };
+                       this.setState({loading: false});
+                        }).catch((error) => {
+                         this.setState({loading: false});
+                             Alert.alert(
+                                 'Error',
+                                  'Please check your internet connection',
+                                 [
+                                   {text: 'OK'},
+                                 ],  );    
+                                 console.log(error); 
+                                });          
                            }
+    }
+    handleConnectivityChange(isConnected){
+      this.setState({ isConnected });
     }
     componentWillUnmount() {
       NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectivityChange);
-}
+    }
 handleConnectivityChange = isConnected => {
-  if (isConnected) {
     this.setState({ isConnected });
-  } else {
-    this.setState({ isConnected });
-  }
 };
   static navigationOptions = {
     header: null,
@@ -80,10 +117,11 @@ handleConnectivityChange = isConnected => {
                   title: item.title,
                   image: item.pictures.thumbnail[0],
                   description: item.description,
+                  uri: item.share_code.facebook
                 }
         )}>
         <View style={{flexDirection: 'column', height: 250, width: 200}}>
-        {item.pictures.thumbnail?
+        {item.pictures.thumbnail[0]?
         <Image resizeMode="cover" style={{width: 200, height: 200, borderRadius: 4}}
                                    source={{uri: item.pictures.thumbnail[0]}}/>:
                                    <Image resizeMode="cover"
@@ -129,7 +167,9 @@ constructor(props) {
   ltvs: [],
   loading: true,
   visual_radio: [],
-  isConnected: true    
+  isConnected: true,
+  mn: [],
+  mnh: [] 
   };
 }
   render() {
@@ -137,8 +177,8 @@ constructor(props) {
       <View style={{flex: 1,backgroundColor: '#000F21'}}>
       <StatusBar backgroundColor='#000F21' translucent={true} barStyle='light-content'/>
       <View style={styles.head}>
-      <Image resizeMode="contain" style={{width: 20, height: 25}} source={require('../menu.png')}/>
-      <Text style={{fontSize: 14, color: 'white', fontFamily: 'mont-bold'}}>HOME</Text>
+      <Image resizeMode="contain" style={{width: 20, height: 25}} source={require('../app_icon.png')}/>
+      <Text style={{fontSize: 14, color: 'orange', fontFamily: 'mont-bold'}}>HOME</Text>
       <Image resizeMode="contain" style={{width: 20, height: 25}} source={require('../search.png')}/>
       </View>
       <ScrollView keyboardShouldPersistTaps='always'
@@ -226,18 +266,35 @@ constructor(props) {
                 layout={'default'}
                 firstItem={1}
             />          }
-          
-        <Text style={{fontSize: 12, color: 'white', marginBottom: 15, marginTop: 10, fontFamily: 'mont-bold', marginLeft: 10}}>
-       TV SHOWS
-      </Text> 
-      <View style={{flexDirection: 'row', width: '90%', height: 140, justifyContent: 'space-between', alignSelf: 'center'}}>
-      <Image resizeMode={'contain'} source={require('../chiefDaddy.jpg')}
-      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
-      <Image resizeMode={'contain'} source={require('../skinnyGirl.jpg')}
-      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
-      <Image resizeMode={'contain'} source={require('../jenifasDiary.jpg')}
-      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
-      </View>  
+      <Text style={{fontSize: 12, color: 'white', marginBottom: 15, marginTop: 10, fontFamily: 'mont-bold', marginLeft: 10}}>
+       Miss Nigeria 2018 Highlights
+      </Text>
+          {this.state.loading? <ActivityIndicator size="small" color="orange" />: <Carousel
+                data={this.state.mnh}
+                renderItem={this._renderItem.bind(this)}
+             //   hasParallaxImages={true}
+                windowSize={1}
+                itemWidth={200}
+                sliderWidth={Dimensions.get('window').width}
+                itemHeight={250}
+                layout={'default'}
+                firstItem={1}
+            />          }
+            <Text style={{fontSize: 12, color: 'white', marginBottom: 15, marginTop: 10, fontFamily: 'mont-bold', marginLeft: 10}}>
+       Miss Nigeria
+      </Text>
+          {this.state.loading? <ActivityIndicator size="small" color="orange" />: <Carousel
+                data={this.state.mn}
+                renderItem={this._renderItem.bind(this)}
+             //   hasParallaxImages={true}
+                windowSize={1}
+                itemWidth={200}
+                sliderWidth={Dimensions.get('window').width}
+                itemHeight={250}
+                layout={'default'}
+                firstItem={1}
+            />          }
+         
           </ScrollView>
           {!this.state.isConnected?<View style={styles.internet}>
                  <Text style={styles.intText}>
@@ -248,7 +305,21 @@ constructor(props) {
     );
   }
 }
-/* <Text style={{fontSize: 12, color: 'white', marginBottom: 15, marginTop: 10, fontFamily: 'mont-bold', marginLeft: 10}}>
+
+/* 
+  
+        <Text style={{fontSize: 12, color: 'white', marginBottom: 15, marginTop: 10, fontFamily: 'mont-bold', marginLeft: 10}}>
+       TV SHOWS
+      </Text> 
+      <View style={{flexDirection: 'row', width: '90%', height: 140, justifyContent: 'space-between', alignSelf: 'center'}}>
+      <Image resizeMode={'contain'} source={require('../chiefDaddy.jpg')}
+      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
+      <Image resizeMode={'contain'} source={require('../skinnyGirl.jpg')}
+      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
+      <Image resizeMode={'contain'} source={require('../jenifasDiary.jpg')}
+      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
+      </View> 
+<Text style={{fontSize: 12, color: 'white', marginBottom: 15, marginTop: 10, fontFamily: 'mont-bold', marginLeft: 10}}>
        POPULAR
       </Text>
       <Carousel
@@ -284,7 +355,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         width: '100%',
-        backgroundColor: 'orange', 
+        backgroundColor: 'white', 
         marginBottom: 20,
         paddingLeft: 10,
         paddingRight: 10,
