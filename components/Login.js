@@ -109,21 +109,7 @@ export default class Login extends Component {
       alignSelf: 'center', justifyContent: 'center', marginBottom: 40}}>
       <Text style={{fontSize: 12, color: 'orange',fontFamily: 'mont-bold',}}>CONTINUE</Text>
       </View></TouchableNativeFeedback>
-      <View style={{width: '60%', height: 50, flexDirection: 'row', alignSelf: 'center',
-      justifyContent: 'space-evenly', alignItems: 'center', marginBottom: 10, marginTop: 10}}>
-      <View style={{width: 50, height: 50, borderRadius: 25, borderColor: 'white', borderWidth: 2, 
-      alignContent: 'center', justifyContent: 'center'}}>
-      <Image resizeMode="contain" style={{width: 30, height: 30, alignSelf: 'center'}} source={require('../fb.png')}/>
-      </View>
-      <View style={{width: 50, height: 50, borderRadius: 25, borderColor: 'white', borderWidth: 2, 
-      alignContent: 'center', justifyContent: 'center'}}>
-       <Image resizeMode="contain" style={{width: 20, height: 20, alignSelf: 'center'}} source={require('../twitter.png')}/>
-      </View>
-      <View style={{width: 50, height: 50, borderRadius: 25, borderColor: 'white', borderWidth: 2, 
-      alignContent: 'center', justifyContent: 'center'}}>
-       <Image resizeMode="contain" style={{width: 20, height: 20, alignSelf: 'center'}} source={require('../gplus.png')}/>
-      </View>
-      </View>
+      
       <Text style={{color: 'white', fontSize: 12, alignSelf:'center', marginTop: '10%', fontFamily: 'mont',}}>
        Already have an account?
       </Text>
@@ -168,3 +154,20 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+/**
+ <View style={{width: '60%', height: 50, flexDirection: 'row', alignSelf: 'center',
+      justifyContent: 'space-evenly', alignItems: 'center', marginBottom: 10, marginTop: 10}}>
+      <View style={{width: 50, height: 50, borderRadius: 25, borderColor: 'white', borderWidth: 2, 
+      alignContent: 'center', justifyContent: 'center'}}>
+      <Image resizeMode="contain" style={{width: 30, height: 30, alignSelf: 'center'}} source={require('../fb.png')}/>
+      </View>
+      <View style={{width: 50, height: 50, borderRadius: 25, borderColor: 'white', borderWidth: 2, 
+      alignContent: 'center', justifyContent: 'center'}}>
+       <Image resizeMode="contain" style={{width: 20, height: 20, alignSelf: 'center'}} source={require('../twitter.png')}/>
+      </View>
+      <View style={{width: 50, height: 50, borderRadius: 25, borderColor: 'white', borderWidth: 2, 
+      alignContent: 'center', justifyContent: 'center'}}>
+       <Image resizeMode="contain" style={{width: 20, height: 20, alignSelf: 'center'}} source={require('../gplus.png')}/>
+      </View>
+      </View>
+ */

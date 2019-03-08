@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Login from './components/Login';
+import On from './components/On';
 import Home from './components/Home';
 import Details from './components/Details';
 import Splash from './components/Splash';
@@ -32,8 +33,11 @@ import {
 const Screens = createStackNavigator({
     
   Home: {
-      screen: Login,
+      screen: On,
   },
+  Login: {
+    screen: Login,
+},
   Details:{
     screen: Details
   },
