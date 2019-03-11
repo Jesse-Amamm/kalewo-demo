@@ -24,7 +24,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 
 
-export default class Login extends Component {
+export default class Signup extends Component {
     constructor(props) {
     super(props);
   }
@@ -97,20 +97,9 @@ export default class Login extends Component {
                             width: '85%'
                             }}/>
       </View>
-      <TouchableNativeFeedback onPress={() =>
-                this.props.navigation.navigate('Films', 
-                )}>
-      <View style={{backgroundColor: '#fff', borderRadius: 3,width: '75%', alignItems:'center', height: 50,
-      alignSelf: 'center', justifyContent: 'center', marginBottom: 40}}>
-      <Text style={{fontSize: 12, color: 'orange',fontFamily: 'mont-bold',}}>CONTINUE</Text>
-      </View></TouchableNativeFeedback>
-      
-      <Text style={{color: 'white', fontSize: 12, alignSelf:'center', marginTop: '10%', fontFamily: 'mont',}}>
-       Already have an account?
-      </Text>
       </ScrollView>
       <TouchableNativeFeedback onPress={() =>
-                this.props.navigation.navigate('Login', 
+                this.props.navigation.navigate('Films', 
                 )}><LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#1e1e1e', '#161616']} style={styles.bottomButton}>
       <Text style={{color: '#fff',fontSize: 14, fontFamily: 'mont-bold',}}>
                      LOGIN

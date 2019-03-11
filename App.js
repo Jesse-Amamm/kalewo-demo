@@ -25,18 +25,22 @@ import Home from './components/Home';
 import Details from './components/Details';
 import Splash from './components/Splash';
 import VideoComponent from './components/VideoComponent';
+import Movies from './components/Movies';
+import Signup from './components/Signup';
 import {
   createStackNavigator,
   createAppContainer
 } from 'react-navigation';
 
 const Screens = createStackNavigator({
-    
+  Signup: {
+       screen: Login 
+  },  
   Home: {
-      screen: On,
+      screen: Home,
   },
   Login: {
-    screen: Login,
+    screen: Signup,
 },
   Details:{
     screen: Details

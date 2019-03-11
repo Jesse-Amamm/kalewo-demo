@@ -179,10 +179,10 @@ export default class On extends Component {
                     </View>
                 </ViewPagerAndroid></ScrollView>
                 <View style={{width: '83.5%', height: 90, 
-                marginBottom: 50,
+                marginBottom: 20,
                 justifyContent: 'space-between', alignSelf: 'center'}}>
                  <TouchableNativeFeedback onPress={() =>
-                this.props.navigation.navigate('Login', 
+                this.props.navigation.navigate('Signup', 
                 )}><View style={{width: '100%',height: 40,
                  borderRadius: 2, backgroundColor: 'white',
                  alignItems: 'center', justifyContent: 'center'}}>
