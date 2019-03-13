@@ -33,9 +33,9 @@ export default class Details extends Component {
     //  <Login/>
     <View style={{flex: 1,backgroundColor: '#000'}}>
     <StatusBar backgroundColor='#000F21' translucent={true} barStyle='light-content'/>
-     <ImageBackground resizeMode={'cover'} style={{width: '100%', height: 400, paddingBottom: 10
+     <ImageBackground resizeMode={'cover'} style={{width: '100%', height: 200, 
       //  paddingLeft: 10, paddingRight: 10
-        }}  source={require('../lionsHeart.jpg')}>
+        }}  source={require('../roti.jpg')}>
          <View style={{height: 25, width: '95%',alignSelf: 'center',
           marginTop: StatusBar.currentHeight+10,
           flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -44,174 +44,109 @@ export default class Details extends Component {
                 )}>
          <Image resizeMode={'contain'} source={require('../left.png')} style={{width: 22,height: 25}}/>
          </TouchableNativeFeedback>
-         <Image resizeMode="contain" style={{width: 150, height: 34, }} source={require('../canvas.png')}/>
-         <TouchableNativeFeedback onPress={() =>
-                this.props.navigation.navigate('Home', 
-                )}>
+         <Image resizeMode="contain" style={{width: 150, height: 34, opacity: 0}} source={require('../canvas.png')}/>
+         <TouchableNativeFeedback>
                 <View style={{width: 22,height: 25, opacity: 0}}>
          <Image resizeMode={'contain'} source={require('../menu.png')} style={{flex: 1}}/></View>
          </TouchableNativeFeedback>
          </View>
-         <ScrollView showsHorizontalScrollIndicator={false}
-         showsVerticalScrollIndicator={false}></ScrollView>
-         <View style={{flexDirection: 'column', marginLeft: 10}}>
-         <Text style={{fontFamily: 'mont-bold', fontSize: 24, color: 'white', alignSelf: 'center'}}>
-           Lion's Heart
-         </Text>
-         <Text style={{fontFamily: 'mont', fontSize: 15, color: 'white', alignSelf: 'center'}}>
-          Drama | Suspense | Igbo
-         </Text>
-        
+         <View style={{width: 90, height: 90, borderRadius: 45, borderWidth: 2, backgroundColor: 'rgba(0,0,0,0.7)',
+         borderColor: 'white',  alignSelf: 'center', justifyContent: 'center'
+         }}>
+          <Image 
+                          resizeMode="contain" style={{width: 46,height: 46, alignSelf:'center'}}
+                         source={require('../play.png')}/>
          </View>
         </ImageBackground>
-        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}
-        overScrollMode={'never'}>
-        <View style={{width: '75%', flexDirection: 'row', height: 40, justifyContent: 'space-between',
-         marginTop: 20, alignSelf: 'center'}}>
-           <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: 30}}>
-           <Text style={{fontSize: 32, fontFamily: 'mont-semi', color: '#F2BB66'}}>
-            +
-           </Text>
-           <Text style={{color: 'grey', fontSize: 12, 
+        <ScrollView showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+        <View style={{width: '90%', alignSelf: 'center'}}>
+        <Text style={{ fontFamily: 'mont-bold', fontSize: 20, color: '#F2BB66',}}>
+          ROTI
+        </Text></View>
+        <View style={{width: '90%', justifyContent: 'space-between', marginTop: 5, flexDirection: 'row', 
+        alignSelf: 'center'}}>
+         <Text style={{fontFamily: 'mont', fontSize: 16, color: '#FFE9B3',}}>
+          98% Match
+        </Text>
+        <Text style={{fontFamily: 'mont', fontSize: 14, color: '#978C8C',}}>
+          2019
+        </Text>
+        <Text style={{fontFamily: 'mont', fontSize: 14, color: '#978C8C',}}>
+          18+
+        </Text>
+        <Text style={{fontFamily: 'mont', fontSize: 14, color: '#978C8C',}}>
+          2 hr 30 mins
+        </Text>
+        </View>
+        <View style={{width: '90%', marginTop: 10, alignSelf: 'center' }}>
+          <Text style={{fontSize: 12, color: 'white', fontFamily: 'mont'}}>
+          The psychological limits and 
+endurance  of a couple are stretched
+after the wife, Diane, suddenly sees 
+an exact replica of her dead son
+ (five years after his death), walking 
+leisurely home from a different school 
+and living an entirely different life. 
+          </Text>
+        </View>
+        <View style={{width: 150, justifyContent: 'space-around', marginLeft: 10, marginTop: 10, flexDirection: 'row'}}>
+         <Text style={{fontFamily: 'mont-bold', fontSize: 12, color: '#F2BB66'}}>
+           Starring: 
+         </Text>
+         <Text style={{fontFamily: 'mont', fontSize: 12, color: '#E4D5D5'}}>
+           Kunle Afolayan
+         </Text>
+        </View>
+        <View style={{width: 150, justifyContent: 'space-around', marginLeft: 10, marginTop: 10, flexDirection: 'row'}}>
+         <Text style={{fontFamily: 'mont-bold', fontSize: 12, color: '#F2BB66'}}>
+           Director: 
+         </Text>
+         <Text style={{fontFamily: 'mont', fontSize: 12, color: '#E4D5D5'}}>
+           Kunle Afolayan
+         </Text>
+        </View>
+        <View style={{flexDirection: 'row',width: '90%',height: 40,marginTop: 10, alignItems: 'center', justifyContent: 'space-between', alignSelf: 'center'}}>
+         <View style={{flexDirection: 'column', height: 35,alignItems: 'center'}}>
+         <Image resizeMode={'contain'} source={require('../+.png')} style={{width: 21, height: 21}}/>
+           <Text style={{color: 'grey', fontSize: 10, 
                      fontFamily: 'mont'}}>
             My List
            </Text>
-           </View>
-           <View style={{width: 85, height: 38, backgroundColor: '#F2BB66', borderRadius: 2, flexDirection: 'row',
-           paddingLeft: 2, paddingRight: 2, alignItems: 'center', justifyContent: 'space-around'}}>
-            <Image 
-                          resizeMode="contain" style={{width: 15,height: 15,}}
-                         source={require('../play.png')}/>
-            <Text style={{color: 'white', fontSize: 14,
-                     fontFamily: 'mont-semi'}}>PLAY</Text>
-                     
-           </View>
-           <View style={{flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', height: 30}}>
-           <Image 
-                          resizeMode="contain" style={{width: 22,height: 22,}}
-                         source={require('../info.png')}/>
-           <Text style={{color: 'grey', fontSize: 12, 
-                     fontFamily: 'mont'}}>
-            Info
-           </Text>
-           </View>
          </View>
-        <View style={{flexDirection: 'column', height: 38, justifyContent: 'space-between',
-        marginLeft: 10, marginTop: 20}}>
-        <Text style={{fontSize: 17, fontFamily: 'mont-bold', color: '#F2BB66' }}>
-         Storyline:
-        </Text>
-        <View style={{backgroundColor: '#F2BB66', width: 35, height: 3}}></View>
+         <View style={{flexDirection: 'column', height: 35,alignItems: 'center'}}>
+         <Image resizeMode={'contain'} source={require('../likee.png')} style={{width: 21, height: 21}}/>
+           <Text style={{color: 'grey', fontSize: 10, 
+                     fontFamily: 'mont'}}>
+            Rate
+           </Text>
+         </View>
+         <View style={{flexDirection: 'column', height: 35,alignItems: 'center'}}>
+         <Image resizeMode={'contain'} source={require('../share.png')} style={{width: 21, height: 21}}/>
+           <Text style={{color: 'grey', fontSize: 10, 
+                     fontFamily: 'mont'}}>
+            Share
+           </Text>
+         </View>
+         <View style={{flexDirection: 'column', height: 35, alignItems: 'center'}}>
+         <Image resizeMode={'contain'} source={require('../dload.png')} style={{width: 21, height: 21}}/>
+           <Text style={{color: 'grey', fontSize: 10, 
+                     fontFamily: 'mont'}}>
+            Download
+           </Text>
+         </View>
         </View>
-        <Text style={{fontFamily: 'mont-light', fontSize: 14, color: 'white', marginTop: 18,
-        marginLeft: 10,marginRight: 10}}>
-        "LionsHeart is an insightful movie"
-        </Text>
-        <View style={{flexDirection: 'row', width: '80%', justifyContent: 'space-between', 
-        alignSelf: 'center', marginTop: 15, alignItems: 'center',height: 50}}>
-        <View style={{flexDirection: 'column', height: 50, justifyContent: 'space-between', 
-        alignItems: 'center'}}>
-        <Text style={{fontSize: 17, fontFamily: 'mont-bold', color: '#F2BB66', height: 45, }}>
-         Length
-        </Text>
-        <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-         NA
-        </Text>
-        </View>
-        <View style={{backgroundColor: '#6D7B8D', width: 3, height: 40, marginTop: 5}}></View>
-        <View style={{flexDirection: 'column', height: 50, justifyContent: 'space-between',
-        alignItems: 'center'}}>
-        <Text style={{fontSize: 17, fontFamily: 'mont-bold', color: '#F2BB66', height: 45 }}>
-         Language
-        </Text>
-        <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-        NA
-        </Text>
-        </View>
-        <View style={{backgroundColor: '#6D7B8D', width: 3, height: 40, marginTop: 5, }}></View>
-        <View style={{flexDirection: 'column', height: 50, justifyContent: 'space-between',
-        alignItems: 'center'}}>
-        <Text style={{fontSize: 17, fontFamily: 'mont-bold', color: '#F2BB66', height: 45 }}>
-         Rating
-        </Text>
-        <Text style={{fontSize: 15, fontFamily: 'mont-light', color: 'white' }}>
-        NA
-        </Text>
-        </View>
-        </View>
-        <View style={{flexDirection: 'column', height: 38, justifyContent: 'space-between',
-        marginLeft: 10, marginTop: 30}}>
-        <Text style={{fontSize: 17, fontFamily: 'mont-bold', color: '#F2BB66' }}>
-         Cast:
-        </Text>
-        <View style={{backgroundColor: '#F2BB66', width: 35, height: 3}}></View>
-        </View>
-        <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} 
-      contentContainerstyle={{flexGrow:1,
-                        flexDirection: 'row',}} 
-                                    keyboardShouldPersistTaps='always'
-                                                       overScrollMode={'never'}
-                                                         showsVerticalScrollIndicator={false}
-                                                         automaticallyAdjustContentInsets={false}
-                                                         directionalLockEnabled={true}
-                                                         bounces={false}
-                                                         scrollsToTop={false}
-      >
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15, marginLeft: 10}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-          <View style={{width: 42, height: 42, borderRadius: 21, borderWidth: 2, 
-          borderColor: 'white', marginRight: 20, marginTop: 15}}>
-            <Image 
-                          resizeMode="contain" style={{flex: 1,width: 42,height: 42,}}
-                         source={require('../star.png')}/>
-          </View>
-      </ScrollView>
+        <Text style={{fontSize: 12, color: 'white', marginBottom: 15, marginTop: 10, fontFamily: 'mont-bold', marginLeft: 10}}>
+       MORE LIKE THIS
+      </Text> 
+      <View style={{flexDirection: 'row', width: '90%', height: 140, justifyContent: 'space-between', alignSelf: 'center'}}>
+      <Image resizeMode={'contain'} source={require('../chiefDaddy.jpg')}
+      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
+      <Image resizeMode={'contain'} source={require('../skinnyGirl.jpg')}
+      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
+      <Image resizeMode={'contain'} source={require('../jenifasDiary.jpg')}
+      style={{width: '25%', height: 140, borderWidth: 3, borderColor: 'white'}}/>
+      </View> 
+        
       </ScrollView>
       <View style={styles.navBar}>
           <TouchableNativeFeedback >

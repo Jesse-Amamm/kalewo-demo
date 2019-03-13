@@ -37,7 +37,7 @@ const Screens = createStackNavigator({
        screen: Login 
   },  
   Home: {
-      screen: Home,
+      screen: Details,
   },
   Login: {
     screen: Signup,
