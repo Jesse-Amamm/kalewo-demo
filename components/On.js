@@ -182,7 +182,7 @@ export default class On extends Component {
                 marginBottom: 20,
                 justifyContent: 'space-between', alignSelf: 'center'}}>
                  <TouchableNativeFeedback onPress={() =>
-                this.props.navigation.navigate('Signup', 
+                this.props.navigation.navigate('Decision', 
                 )}><View style={{width: '100%',height: 40,
                  borderRadius: 2, backgroundColor: 'white',
                  alignItems: 'center', justifyContent: 'center'}}>
@@ -192,7 +192,7 @@ export default class On extends Component {
                  </View> 
                  </TouchableNativeFeedback>
                  <TouchableNativeFeedback onPress={() =>
-                this.props.navigation.navigate('Login', 
+                this.props.navigation.navigate('Decision', 
                 )}><View style={{width: '100%',height: 40,
                  borderRadius: 2, backgroundColor: '#F58634',
                  alignItems: 'center', justifyContent: 'center'}}>

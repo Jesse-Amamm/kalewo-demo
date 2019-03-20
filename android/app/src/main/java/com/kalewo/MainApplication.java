@@ -1,7 +1,7 @@
 package com.kalewo;
 
 import android.app.Application;
-
+import com.horcrux.svg.SvgPackage;
 import com.facebook.react.ReactApplication;
 import com.brentvatne.react.ReactVideoPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
@@ -30,7 +30,8 @@ public class MainApplication extends Application implements ReactApplication {
             new ReactVideoPackage(),
             new LottiePackage(),
             new LinearGradientPackage(),
-            new RNGestureHandlerPackage()
+            new RNGestureHandlerPackage(),
+            new SvgPackage()
       );
     }
 

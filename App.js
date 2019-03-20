@@ -15,7 +15,8 @@ import {
   ImageBackground,
   TouchableNativeFeedback,
   ScrollView,
-  TextInput
+  TextInput,
+  Dimensions
 
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -24,38 +25,92 @@ import On from './components/On';
 import Home from './components/Home';
 import Details from './components/Details';
 import Splash from './components/Splash';
+import SideBar from './components/SideBar';
 import VideoComponent from './components/VideoComponent';
 import Movies from './components/Movies';
 import Signup from './components/Signup';
+import Decision from './components/Decision';
+import Described from './components/Described';
 import {
   createStackNavigator,
-  createAppContainer
+  createAppContainer, DrawerNavigator, DrawerItems
 } from 'react-navigation';
 
+const dimensions = Dimensions.get('window');
+const Width = dimensions.width;
 const Screens = createStackNavigator({
+ /* Home: {
+      screen:   Decision,
+  },
+  Decision: {
+      screen: Decision,
+  },*/
+  Described: {
+      screen: Described
+  },
   Signup: {
        screen: Login 
   },  
-  Home: {
-      screen: Details,
-  },
+  
   Login: {
     screen: Signup,
 },
-  Details:{
-    screen: Details
-  },
-  Films: {
-    screen: Home
-  },
   Video:{
     screen: VideoComponent
+  },
+  SideBar: {
+    screen: SideBar
   }
  
-}, {
+},/*{
     initialRouteName: "Home"
-  },
+  },*/
   );
+ /* Screens.navigationOptions = ({ navigation }) => {
+    name = (navigation.state.index !== undefined ? navigation.state.routes[navigation.state.index] : navigation.state.routeName)
+     let drawerLockMode = 'locked-closed';
+     return {
+       drawerLockMode,
+     };
+   }
+   Screens.navigationOptions = ({ navigation }) => {
+    let drawerLockMode = 'unlocked';
+    if (navigation.state.index >= 0) {
+      drawerLockMode = 'locked-closed'; 
+    }
+    return {
+      drawerLockMode,
+    };
+  }*/
+const RootStack = DrawerNavigator(
+    {
+        drawer: {
+            screen: Screens
+        }
+    },
+    {
+        drawerWidth: Width * (56 / 100),
+        contentComponent: SideBar,
+        drawerPosition: 'right'
+    },
+
+/*    {
+        initialRouteName: 'Home',
+    }
+    ,*/ {}
+);
+RootStack.navigationOptions = {
+  // Hide the header from AppNavigator stack
+  header: null,
+};
+const HomeStack = createStackNavigator({
+  Drawer: RootStack,
+  Home: Decision,
+  
+  /* add routes here where you want the drawer to be locked */
+},{
+  initialRouteName: "Home"
+},);
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -74,7 +129,7 @@ export default class App extends Component {
             </View>;
     } else {
         return (
-            <Screens/>
+            <HomeStack/>
         );
 
     }
