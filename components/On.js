@@ -15,13 +15,14 @@ import {
   NetInfo,
     Animated,
   ImageBackground,
-  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   ScrollView,
   Dimensions,
   FlatList,
   Alert,
   ViewPagerAndroid
 } from 'react-native';
+import {ViewPager} from 'rn-viewpager';
 
 export default class On extends Component {
     static navigationOptions = {
@@ -91,7 +92,7 @@ export default class On extends Component {
                 <ScrollView showsVerticalScrollIndicator={false} 
                 overScrollMode={'never'} style={{ flex: 1 }} 
                 contentContainerStyle={{ flex: 1 }}>
-                <ViewPagerAndroid
+                <ViewPager
                     onPageSelected={this.onPageSelected.bind(this)}
                     ref={(viewPager) => {
                         this.viewPager = viewPager
@@ -177,11 +178,11 @@ export default class On extends Component {
                             Sign up or Log in and let’s get started
                         </Text>
                     </View>
-                </ViewPagerAndroid></ScrollView>
+                </ViewPager></ScrollView>
                 <View style={{width: '83.5%', height: 90, 
                 marginBottom: 20,
                 justifyContent: 'space-between', alignSelf: 'center'}}>
-                 <TouchableNativeFeedback onPress={() =>
+                 <TouchableWithoutFeedback onPress={() =>
                 this.props.navigation.navigate('Decision', 
                 )}><View style={{width: '100%',height: 40,
                  borderRadius: 2, backgroundColor: 'white',
@@ -190,8 +191,8 @@ export default class On extends Component {
                      fontFamily: 'mont-bold'}}>
                      Sign up</Text>
                  </View> 
-                 </TouchableNativeFeedback>
-                 <TouchableNativeFeedback onPress={() =>
+                 </TouchableWithoutFeedback>
+                 <TouchableWithoutFeedback onPress={() =>
                 this.props.navigation.navigate('Decision', 
                 )}><View style={{width: '100%',height: 40,
                  borderRadius: 2, backgroundColor: '#F58634',
@@ -199,7 +200,7 @@ export default class On extends Component {
                      <Text style={{color: 'white', fontSize: 12,
                      fontFamily: 'mont-bold'}}>
                      Log in</Text>
-                 </View></TouchableNativeFeedback>
+                 </View></TouchableWithoutFeedback>
                 </View>
                 </View>
             </View>

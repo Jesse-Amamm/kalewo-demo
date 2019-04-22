@@ -13,7 +13,7 @@ import {
   Image,
   StatusBar,
   ImageBackground,
-  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   ScrollView,
   TextInput
 
@@ -33,79 +33,125 @@ export default class Signup extends Component {
     };
   render() {
     return (
-      <View
-  //   resizeMode="cover"
-      style={{
-        // #fc7305
-       flex: 1,
-       backgroundColor: '#000',
-      }}
-      // react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
-     >
-      <StatusBar backgroundColor='#000F21' translucent={true} barStyle='light-content'/>
-      <ScrollView showsVerticalScrollIndicator={false} overScrollMode={'never'}>
-      <View style={{width:150, height: 34, alignSelf: 'center', marginTop: 60, marginBottom: 30}}>
-      <Image resizeMode="contain" style={{width: 150, height: 34, }} source={require('../canvas.png')}/>
-      </View>
-      <View style={{height:50,width: '75%', borderBottomColor: 'white', justifyContent: 'space-between',
-      borderBottomWidth: 2, alignSelf: 'center',marginBottom: 15, 
-      flexDirection: 'row'}}>
-      <View style={{width: 25, height: 50, alignItems: 'center', justifyContent: 'center'}}>
-      <Image resizeMode="contain" source={require('../user.png')} style={{width: 25, height: 25}}/>
-      </View>
-      <TextInput            returnKeyType={'next'}
+      <ImageBackground resizeMode="cover"
+      style={{width: '100%', height: '100%',}}
+      source={require('../movieBanners.png')}>
+      <View style={{
+         width: '100%',
+         height: '100%',
+         backgroundColor: 'rgba(0,0,0,0.90)',
+         flexDirection: 'column'
+        }}>
+        <ScrollView contentContainerstyle={{flexGrow:1}} 
+                                    keyboardShouldPersistTaps='always'
+                                                         showsHorizontalScrollIndicator={false}
+                                                         showsVerticalScrollIndicator={false}
+                                                         automaticallyAdjustContentInsets={false}
+                                                         directionalLockEnabled={true}
+                                                         bounces={false}
+                                                         scrollsToTop={false}>
+         <Image resizeMode="contain"
+                                   style={{width: 198, height: 48,
+                                   marginTop: 150, alignSelf: 'center' }}
+                                   source={require('../kl.png')}/>
+         <View style={{flexDirection: 'row', width: '82%', alignSelf: 'center', 
+         justifyContent: 'space-between', height: 34, marginTop: '11%'}}>
+          <View style={{width: 30, height: 34, justifyContent: 'center', 
+          backgroundColor: '#494646', borderRadius: 3}}>
+          <Image resizeMode="contain"
+                                   style={{width: 16, height: 16, alignSelf: 'center' }}
+                                   source={require('../envelope.png')}/> 
+          </View>
+          <View style={{width: '85%', height: 34, backgroundColor: 'rgba(79, 76, 76, 0.48)',
+          borderRadius: 3}}>
+          <TextInput            returnKeyType={'next'}
                             underlineColorAndroid={'transparent'}
-                            style={{// backgroundColor: '#fff',
-                            color: '#000',
-                            letterSpacing: 2,
-                            fontSize: 12,
-                            fontFamily: 'mont',
-                            width: '85%'
-                            }}/>
-      </View>
-      <View style={{height:50,width: '75%', borderBottomColor: 'white', 
-      borderBottomWidth: 2, alignSelf: 'center',marginBottom: 15, justifyContent: 'space-between',
-      flexDirection: 'row'}}>
-      <View style={{width: 25, height: 50, alignItems: 'center', justifyContent: 'center'}}>
-      <Image resizeMode="contain" source={require('../mail.png')} style={{width: 25, height: 25}}/>
-      </View>
-      <TextInput            returnKeyType={'next'}
+                            placeholder="Email address"
+                                       placeholderStyle={{fontSize: 14, fontFamily: 'camptonLight'}}
+                                       placeholderTextColor="#A09E9E"
+style={{
+                                           alignSelf: 'center',
+                                           justifyContent: 'center',
+                                           height: 34,
+                                           width: '95%',
+                                           backgroundColor: 'transparent',
+                                           fontSize: 14, fontFamily: 'camptonLight', color: '#A09E9E',
+                                       }}/>
+          </View>
+         </View>  
+         <View style={{flexDirection: 'row', width: '82%', alignSelf: 'center', 
+         justifyContent: 'space-between', height: 34, marginTop:28}}>
+          <View style={{width: 30, height: 34, justifyContent: 'center', 
+          backgroundColor: '#494646', borderRadius: 3}}>
+          <Image resizeMode="contain"
+                                   style={{width: 16, height: 16, alignSelf: 'center' }}
+                                   source={require('../lock.png')}/> 
+          </View>
+          <View style={{width: '85%', height: 34, backgroundColor: 'rgba(79, 76, 76, 0.48)',
+          borderRadius: 3}}>
+          <TextInput            returnKeyType={'next'}
                             underlineColorAndroid={'transparent'}
-                            style={{// backgroundColor: '#fff',
-                            color: '#000',
-                            letterSpacing: 2,
-                            fontSize: 12,
-                            fontFamily: 'mont',
-                            width: '85%'
-                            }}/>
-      </View>
-      <View style={{height:50,width: '75%', borderBottomColor: 'white', 
-      borderBottomWidth: 2, alignSelf: 'center',marginBottom: 40, justifyContent: 'space-between',
-      flexDirection: 'row'}}>
-      <View style={{width: 25, height: 50, alignItems: 'center', justifyContent: 'center'}}>
-      <Image resizeMode="contain" source={require('../padlock.png')} style={{width: 25, height: 25}}/>
-      </View>
-      <TextInput           
+                            placeholder="Password"
                             secureTextEntry={true}
-                            returnKeyType={'next'}
+                                       placeholderStyle={{fontSize: 14, fontFamily: 'camptonLight'}}
+                                       placeholderTextColor="#A09E9E"
+style={{
+                                           alignSelf: 'center',
+                                           justifyContent: 'center',
+                                           height: 34,
+                                           width: '95%',
+                                           backgroundColor: 'transparent',
+                                           fontSize: 14, fontFamily: 'camptonLight', color: '#A09E9E',
+                                       }}/>
+          </View>
+         </View>  
+         <View style={{flexDirection: 'row', width: '82%', alignSelf: 'center', 
+         justifyContent: 'space-between', height: 34, marginTop: 28}}>
+          <View style={{width: 30, height: 34, justifyContent: 'center', 
+          backgroundColor: '#494646', borderRadius: 3}}>
+          <Image resizeMode="contain"
+                                   style={{width: 16, height: 16, alignSelf: 'center' }}
+                                   source={require('../phone.png')}/> 
+          </View>
+          <View style={{width: '85%', height: 34, backgroundColor: 'rgba(79, 76, 76, 0.48)',
+          borderRadius: 3}}>
+          <TextInput            returnKeyType={'next'}
                             underlineColorAndroid={'transparent'}
-                            style={{ //backgroundColor: '#fff',
-                            color: '#000',
-                            letterSpacing: 2,
-                            fontSize: 12,
-                            fontFamily: 'mont',
-                            width: '85%'
-                            }}/>
-      </View>
-      </ScrollView>
-      <TouchableNativeFeedback onPress={() =>
-                this.props.navigation.navigate('Films', 
-                )}><LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 0}} colors={['#1e1e1e', '#161616']} style={styles.bottomButton}>
-      <Text style={{color: '#fff',fontSize: 14, fontFamily: 'mont-bold',}}>
-                     LOGIN
-                    </Text>
-      </LinearGradient></TouchableNativeFeedback>
-                </View>
+                            placeholder="Mobile Number"
+                                       placeholderStyle={{fontSize: 14, fontFamily: 'camptonLight'}}
+                                       placeholderTextColor="#A09E9E"
+style={{
+                                           alignSelf: 'center',
+                                           justifyContent: 'center',
+                                           height: 34,
+                                           width: '95%',
+                                           backgroundColor: 'transparent',
+                                           fontSize: 14, fontFamily: 'camptonLight', color: '#A09E9E',
+                                       }}/>
+          </View>
+         </View>
+         <TouchableWithoutFeedback  onPress={() =>
+                this.props.navigation.navigate('Described', 
+                )}>
+                <View style={{backgroundColor: '#FCAA4A', width: 98, height: 27, 
+         alignSelf: 'center', justifyContent: 'center', marginTop: 50}}>
+         <Text style={{fontFamily: 'camptonBold', fontSize: 14, 
+         color: '#262728', alignSelf: 'center'}}>Sign Up</Text>
+         </View></TouchableWithoutFeedback>             
+         </ScrollView>
+         <TouchableWithoutFeedback  onPress={() =>
+                this.props.navigation.navigate('Login', 
+                )}> 
+         <View style={{width: '100%', height: 66,backgroundColor: '#FCAA4A',
+         justifyContent: 'center' }}>
+         <Text style={{fontFamily: 'camptonBold', fontSize: 13, letterSpacing: 3.2,
+         color: '#262728', alignSelf: 'center', textAlign: 'center'}}>
+         HAVE AN ACCOUNT? SIGN IN
+         </Text>
+         </View>          
+         </TouchableWithoutFeedback>  
+        </View>
+      </ImageBackground>
     );
   }
 }

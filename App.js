@@ -13,7 +13,7 @@ import {
   Image,
   StatusBar,
   ImageBackground,
-  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   ScrollView,
   TextInput,
   Dimensions
@@ -31,33 +31,53 @@ import Movies from './components/Movies';
 import Signup from './components/Signup';
 import Decision from './components/Decision';
 import Described from './components/Described';
+import Selection from './components/Selection';
+import MyList from './components/MyList';
+import Search from './components/Search';
+import ResetPassword from './components/ResetPassword';
+import Notifications from './components/Notifications';
+import EditProfile from './components/EditProfile';
+import FAQ from './components/FAQ';
+import Help from './components/Help';
 import {
   createStackNavigator,
   createAppContainer, DrawerNavigator, DrawerItems
 } from 'react-navigation';
+import store from "./store/index";
+import {connect, Provider} from 'react-redux';
+import {changeName
+} from "./actions/index";
+
+const mapStateToProps = state => {
+    return {
+        account: state.account
+    };
+};
+const mapDispatchToProps = dispatch => {
+    return {
+      trueAccount: account => dispatch(trueAccount(account))
+    };
+};
 
 const dimensions = Dimensions.get('window');
 const Width = dimensions.width;
 const Screens = createStackNavigator({
- /* Home: {
-      screen:   Decision,
+ 
+  MyList: {
+      screen: MyList,
   },
-  Decision: {
-      screen: Decision,
-  },*/
+  ResetPassword: {
+    screen: ResetPassword,
+  },
   Described: {
       screen: Described
   },
-  Signup: {
-       screen: Login 
-  },  
-  
-  Login: {
-    screen: Signup,
-},
-  Video:{
-    screen: VideoComponent
+  Help:  {
+      screen: Help
   },
+  Notifications: {
+    screen: Notifications
+},
   SideBar: {
     screen: SideBar
   }
@@ -106,12 +126,17 @@ RootStack.navigationOptions = {
 const HomeStack = createStackNavigator({
   Drawer: RootStack,
   Home: Decision,
-  
+  Signup: Signup, 
+  Login: Login,
+  Selection: Selection,
+  EditProfile: EditProfile,
+   FAQ: FAQ,
+   Video: VideoComponent,
   /* add routes here where you want the drawer to be locked */
 },{
   initialRouteName: "Home"
 },);
-export default class App extends Component {
+class reduxApp  extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -129,12 +154,21 @@ export default class App extends Component {
             </View>;
     } else {
         return (
-            <HomeStack/>
+          <Provider store={store}>
+            <HomeStack/></Provider>
         );
 
     }
   }
 }
+function connectWithStore(store, WrappedComponent, ...args) {
+  var ConnectedWrappedComponent = connect(...args)(WrappedComponent)
+  return function (props) {
+    return <ConnectedWrappedComponent {...props} store={store} />
+  }
+}
+const App = connectWithStore(store, reduxApp,mapStateToProps, mapDispatchToProps);
+export default App;
 
 const styles = StyleSheet.create({
   bottomButton:{

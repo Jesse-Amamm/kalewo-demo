@@ -7,7 +7,7 @@ import {
   Image,
   StatusBar,
   ImageBackground,
-  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   ScrollView,
   Dimensions,
   FlatList,
@@ -47,9 +47,9 @@ export default class VideoComponent extends React.Component {
       <View style={{height: 25, width: '95%',alignSelf: 'center',
           marginTop: StatusBar.currentHeight+10, backgroundColor: 'transparent',
           flexDirection: 'row', }}>
-         <TouchableNativeFeedback onPress={() => this.props.navigation.goBack()}>
+         <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
          <Image resizeMode={'contain'} source={require('../left.png')} style={{width: 22,height: 25}}/>
-         </TouchableNativeFeedback>
+         </TouchableWithoutFeedback>
          </View>
       {params.uri?<WebView
         source={{uri: params.uri}}

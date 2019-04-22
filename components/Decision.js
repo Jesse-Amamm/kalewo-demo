@@ -9,7 +9,7 @@ import {
   NetInfo,
     Animated,
   ImageBackground,
-  TouchableNativeFeedback,
+  TouchableWithoutFeedback,
   ScrollView,
   Dimensions,
   FlatList,
@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import axios from 'axios';
-import {BoxShadow} from 'react-native-shadow'
+import {BoxShadow} from 'react-native-shadow';
 const api_key = '114063_a93666d11c33ea8dccac';
 export default class Decision extends Component{
   componentDidMount() {
@@ -82,24 +82,30 @@ constructor(props) {
         marginTop: 6}}>
         Watch anywhere, cancel at anytime</Text>
         <BoxShadow setting={shadowOpt}>
-        <TouchableNativeFeedback  onPress={() =>
-                this.props.navigation.navigate('Described', 
+        <TouchableWithoutFeedback  onPress={() =>
+                this.props.navigation.navigate('Signup', 
                 )}>
-        <View style={{width: 189, height: 40, elevation: 2, backgroundColor: 'black', 
+        <View style={{width: 189, height: 40, backgroundColor: 'black', 
         alignItems: 'center', justifyContent: 'center', }}>
 <Text style={{fontFamily: 'camptonBold', fontSize: 13, color: 'white',}}>
         JOIN FREE FOR A MONTH</Text>
-        </View></TouchableNativeFeedback></BoxShadow>
+        </View></TouchableWithoutFeedback></BoxShadow>
         </ImageBackground>
         </ScrollView>
         <View style={{height: 16, width:'100%', flexDirection: 'row', 
         alignItems: 'center', justifyContent: 'space-around', marginBottom: 30}}>
-          <Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
+         <TouchableWithoutFeedback  onPress={() =>
+                this.props.navigation.navigate('Login', 
+                )}>
+          <View><Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
           SIGN IN
-          </Text>
-          <Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
+          </Text></View></TouchableWithoutFeedback>
+          <TouchableWithoutFeedback  onPress={() =>
+                this.props.navigation.navigate('Help', 
+                )}>
+          <View><Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
           HELP
-          </Text>
+          </Text></View></TouchableWithoutFeedback>
           <Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
           DEVICE
           </Text>
@@ -112,5 +118,78 @@ constructor(props) {
     );
   }
 }
+/*
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+adb reverse tcp:8081 tcp:8081
+adb shell input text "RR"
+
+*/
 const styles = StyleSheet.create({
 });
+/*
+// eslint-disable linebreak-style 
+// eslint-disable no-unused-vars 
+import React, { Component } from 'react'
+import {
+    ActivityIndicator, Platform,
+    StyleSheet,
+    Text,
+    View, 
+    Image,
+    StatusBar,
+    NetInfo,
+    Animated,
+    ImageBackground,
+    TouchableWithoutFeedback,
+    ScrollView,
+    Dimensions,
+    FlatList,
+    Alert,
+    TextInput
+} from 'react-native'
+
+export default class EditProfile extends Component{
+    render() {
+        return (
+            <View>
+                <View style={{
+                    elevation: 1,
+                    backgroundColor: '#EFB879',
+                    height: 70,
+                    marginTop: StatusBar.currentHeight,
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    alignItems: 'center',
+                    padding: 10
+                }}>
+                    <Text style={{color: 'white', fontSize: 15}}>CANCEL</Text>
+                    <Text style={{color: 'white', fontSize: 15, fontWeight: 600}}>EDIT PROFILE</Text>
+                    <Text style={{color: 'white', fontSize: 15}}>DONE</Text>
+                </View>
+                <ScrollView contentContainerstyle={{
+                    flexGrow: 1,
+                }} 
+                showsHorizontalScrollIndicator={false}
+                showsVerticalScrollIndicator={false}
+                automaticallyAdjustContentInsets={false}
+                directionalLockEnabled={true}
+                bounces={false}
+                scrollsToTop={false}>
+                    <TextInput    
+                        //  underlineColorAndroid={'transparent'}
+                        allowFontScaling={false}
+                        placeholder="Name"
+                        placeholderTextColor="rgba(0, 0, 0, 0.2)"
+                        style={{
+                            paddingLeft: 28,
+                            width: (Dimensions.get('window').width),
+                            backgroundColor: 'transparent',
+                            fontSize: 16, color: 'black',
+                            marginTop: 100, flexDirection: 'row', alignItems: 'center', 
+                        }}/>  
+                </ScrollView>
+            </View>
+        )
+    }
+}
+*/
