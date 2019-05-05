@@ -3,6 +3,7 @@ package com.kalewo;
 import android.app.Application;
 import com.horcrux.svg.SvgPackage;
 import com.facebook.react.ReactApplication;
+import in.sriraman.sharedpreferences.RNSharedPreferencesReactPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -27,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSharedPreferencesReactPackage(),
             new ReactVideoPackage(),
             new LottiePackage(),
             new LinearGradientPackage(),

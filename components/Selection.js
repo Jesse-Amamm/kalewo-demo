@@ -40,6 +40,7 @@ import {
 } from "../actions/index";
 import Home from "./Home";
 import Search from "./Search";
+var SharedPreferences = require("react-native-shared-preferences");
 const api_key = "114063_a93666d11c33ea8dccac";
 
 const mapStateToProps = state => {
@@ -77,17 +78,62 @@ const mapDispatchToProps = dispatch => {
 class reduxSelection extends Component {
   componentDidUpdate() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+    SharedPreferences.getItem("key2", function(value){
+      if(value){
+      this.setState({id: value})    
+      }   
+    }.bind(this));
+  SharedPreferences.getItem("key1", function(value){
+      if(value){
+      this.setState({token: value})    
+      }   
+    }.bind(this));
+  }
   static navigationOptions = {
     header: null
   };
   constructor(props) {
     super(props);
     this.state = {
-      texter: false
+      texter: false,
+      regLoader: false,
+      id: '',
+      token: ''
     };
   }
-
+  adder(id){
+    this.setState({regLoader: true});
+    var bodyParameters = {
+        user_id: this.state.id,
+        resource_id: id,
+      };
+      var config = {
+        headers: {'Authorization': "Bearer " + this.state.token}
+      };
+      axios
+        .post("http://app.kalewo.ng/api/addlistitem", bodyParameters,
+        config)
+        .then(response => {
+          console.log(response);
+          Alert.alert(
+            "Success",
+           "This video was added successfully",
+            [{ text: "OK" }]
+          );
+          this.setState({regLoader: false});
+        })
+        .catch(error => {
+          this.setState({regLoader: false});
+          Alert.alert(
+            "Error",
+            JSON.stringify(error.response.data.error),
+            [{ text: "OK" }]
+          );
+          console.log(JSON.stringify(error.response.data.error));
+        });
+    }
+  
   render() {
     const { params } = this.props.navigation.state;
     return (
@@ -192,6 +238,7 @@ class reduxSelection extends Component {
           >
             {params.title}
           </Text>
+          {params.stream?
           <View
             style={{
               width: 78,
@@ -242,10 +289,13 @@ class reduxSelection extends Component {
                   alignSelf: "center"
                 }}
               >
-                1hr43mins
+                {params.duration}
               </Text>
             </View>
           </View>
+          : null
+          }
+          
           <View style={{ width: "87%", alignSelf: "center" }}>
             {this.state.texter ? (
               <Text
@@ -286,7 +336,7 @@ class reduxSelection extends Component {
                   marginTop: 9
                 }}
               >
-                READ MORE
+                {null}
               </Text>
             </TouchableWithoutFeedback>
           )}
@@ -299,6 +349,9 @@ class reduxSelection extends Component {
               flexDirection: "row"
             }}
           >
+            {this.state.regLoader?
+            <ActivityIndicator color="white"></ActivityIndicator>
+            :<TouchableWithoutFeedback onPress={this.adder.bind(this, params.id)}>
             <View
               style={{
                 width: 30,
@@ -322,7 +375,7 @@ class reduxSelection extends Component {
               >
                 Add to List
               </Text>
-            </View>
+            </View></TouchableWithoutFeedback>}
             <View
               style={{
                 width: 30,

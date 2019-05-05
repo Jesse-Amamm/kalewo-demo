@@ -47,6 +47,7 @@ import store from "./store/index";
 import {connect, Provider} from 'react-redux';
 import {changeName
 } from "./actions/index";
+var SharedPreferences = require("react-native-shared-preferences");
 
 const mapStateToProps = state => {
     return {
@@ -62,7 +63,6 @@ const mapDispatchToProps = dispatch => {
 const dimensions = Dimensions.get('window');
 const Width = dimensions.width;
 const Screens = createStackNavigator({
- 
   MyList: {
       screen: MyList,
   },
@@ -82,26 +82,45 @@ const Screens = createStackNavigator({
     screen: SideBar
   }
  
-},/*{
-    initialRouteName: "Home"
-  },*/
+},
   );
- /* Screens.navigationOptions = ({ navigation }) => {
-    name = (navigation.state.index !== undefined ? navigation.state.routes[navigation.state.index] : navigation.state.routeName)
-     let drawerLockMode = 'locked-closed';
-     return {
-       drawerLockMode,
-     };
-   }
-   Screens.navigationOptions = ({ navigation }) => {
-    let drawerLockMode = 'unlocked';
-    if (navigation.state.index >= 0) {
-      drawerLockMode = 'locked-closed'; 
-    }
-    return {
-      drawerLockMode,
-    };
-  }*/
+  const LoggedIn = createStackNavigator({
+    MyList: {
+        screen: MyList,
+    },
+    ResetPassword: {
+      screen: ResetPassword,
+    },
+    Described: {
+        screen: Described
+    },
+    Help:  {
+        screen: Help
+    },
+    Notifications: {
+      screen: Notifications
+  },
+    SideBar: {
+      screen: SideBar
+    },
+    
+   
+  },{
+    initialRouteName: "Described"
+  }
+  );
+  const LoggedInRootStack = DrawerNavigator(  
+    {
+        drawer: {
+            screen: LoggedIn
+        }
+    },
+    {
+        drawerWidth: Width * (56 / 100),
+        contentComponent: SideBar,
+        drawerPosition: 'right'
+    }, {}
+);
 const RootStack = DrawerNavigator(
     {
         drawer: {
@@ -112,15 +131,12 @@ const RootStack = DrawerNavigator(
         drawerWidth: Width * (56 / 100),
         contentComponent: SideBar,
         drawerPosition: 'right'
-    },
-
-/*    {
-        initialRouteName: 'Home',
-    }
-    ,*/ {}
+    }, {}
 );
+LoggedInRootStack.navigationOptions = {
+  header: null,
+};
 RootStack.navigationOptions = {
-  // Hide the header from AppNavigator stack
   header: null,
 };
 const HomeStack = createStackNavigator({
@@ -132,16 +148,30 @@ const HomeStack = createStackNavigator({
   EditProfile: EditProfile,
    FAQ: FAQ,
    Video: VideoComponent,
-  /* add routes here where you want the drawer to be locked */
 },{
   initialRouteName: "Home"
+},);
+const LoggedHomeStack = createStackNavigator({
+  Drawer: LoggedInRootStack,
+  Selection: Selection,
+  EditProfile: EditProfile,
+   FAQ: FAQ,
+   Video: VideoComponent,
 },);
 class reduxApp  extends Component {
   constructor(props) {
     super(props);
     this.state = {
       timePassed: false,
+      isLoggedIn: false
   };
+  }
+  componentDidMount(){
+    SharedPreferences.getItem("key1", function(value){
+      if(value){
+      this.setState({isLoggedIn: true});   
+      }   
+    }.bind(this));
   }
   render() {
       setTimeout(() => {
@@ -153,10 +183,19 @@ class reduxApp  extends Component {
             <Splash/>
             </View>;
     } else {
+      if(this.state.isLoggedIn){
         return (
           <Provider store={store}>
-            <HomeStack/></Provider>
+            <LoggedHomeStack/>
+            </Provider>
         );
+      }else{
+       return (
+          <Provider store={store}>
+            <HomeStack/></Provider>
+        ); 
+      }
+        
 
     }
   }

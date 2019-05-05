@@ -79,11 +79,81 @@ class reduxEditProfile extends Component{
           this.oldPTextInput.focus();
       }
   }
+  componentDidMount(){
+    console.log(this.props)
+  }
+  updateName= () => {
+    const {params} = this.props.navigation.state;
+    var config = {
+      headers: {'Authorization': "Bearer " + params.token}
+    };
+    var bodyParameters = {
+      name: this.state.setName
+    }
+    axios
+    .put("http://app.kalewo.ng/api/update", bodyParameters,
+    config)
+    .then(response => {
+      console.log(response.data.data);
+      var len = response.data ? response.data.data.length : null;
+      console.log(len+"--len");
+    //  response.data.success
+      this.setState({regLoader: false});
+    })
+    .catch(error => {
+      this.setState({regLoader: false});
+      Alert.alert(
+        "Error",
+        "Profile Update"+JSON.stringify(error.response.message),
+        [{ text: "OK" }]
+      );
+      console.log("kl"+ JSON.stringify(error));
+    });
+  }
+  updatePhone= () => {
+    const {params} = this.props.navigation.state;
+    var config = {
+      headers: {'Authorization': "Bearer " + params.token}
+    };
+    var bodyParameters = {
+      phone: this.state.setCity
+    }
+    axios
+    .put("http://app.kalewo.ng/api/update", bodyParameters,
+    config)
+    .then(response => {
+      console.log(response.data.data);
+      var len = response.data ? response.data.data.length : null;
+      console.log(len+"--len");
+    //  response.data.success
+      this.setState({regLoader: false});
+    })
+    .catch(error => {
+      this.setState({regLoader: false});
+      Alert.alert(
+        "Error",
+        "Profile Update"+JSON.stringify(error.response.message),
+        [{ text: "OK" }]
+      );
+      console.log("kl"+ JSON.stringify(error));
+    });
+  }
   handleName(text){
-    this.setState({setName: text});
+    this.setState({setName: text},
+      () => {
+        if (this.state.setName && this.state.setName.length > 1) {
+            this.updateName()
+         
+      } });
+
   }
   handleCity(text){
-      this.setState({setCity: text})
+      this.setState({setCity: text},
+        () => {
+          if (this.state.setCity && this.state.setCity.length > 1) {
+              this.updatePhone()
+           
+        } });
   }
   handleNewP(text){
       this.setState({setNewP: text})
@@ -124,11 +194,15 @@ back(){
     this.viewPagerr.setPage(0);
     this.setState({first: true});
 }
-  componentDidMount() {}
+  componentDidMount() {
+    const {params} = this.props.navigation.state;
+    this.setState({setName: params.name ,setCity: params.phone})
+  }
     static navigationOptions = {
       header: null,
   };
 constructor(props) {
+  
   super(props);
   this.state = {
       one: true,
@@ -174,6 +248,7 @@ oldP(){
 //    this.oldPTextInput.focus();
 }
   render() {
+    const {params} = this.props.navigation.state;
     const shadowOpt = {
         width: (Dimensions.get('window').width)*(61/100),
         height:39,
@@ -227,7 +302,7 @@ oldP(){
        <View style={{flex: 1}} key="1">
        <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center',
       marginTop: 39 }} resizeMode="cover"
-        source={require('../pp.png')}/>
+        source={require('../user.png')}/>
        </View>
                     <View style={{flex: 1, }} key="2">
                     <ImageBackground style={{width: 142, height:142,alignSelf: 'center',
@@ -273,19 +348,18 @@ oldP(){
                                        placeholderStyle={{fontSize: 14, fontFamily: 'camptonBold'}}
                                        placeholderTextColor="#4D4949"
                                        ref={(input) => { this.nameTextInput = input; }}
-style={{
-                                           alignSelf: 'center',
+style={{alignSelf: 'center',
                                            height: 38,
                                            width: '95%',
                                            backgroundColor: 'transparent',
                                            fontSize: 14, fontFamily: 'camptonBold', color: '#4D4949',
-                                       }}/>
+                                       }} />
         </View></BoxShadow>:
         <TouchableWithoutFeedback onPress={this.name.bind(this)}>
         <View style={{width: '100%', height: 38, alignSelf: 'center',
          backgroundColor: '#878383',marginTop: 29, justifyContent: 'center', }}>
         <Text style={{fontFamily: 'camptonBold', fontSize: 12, color: '#D9CBCB', marginLeft: 11}}>
-        {this.state.setName?this.state.setName:"NAME"}</Text>
+        {this.state.setName?this.state.setName:params.name}</Text>
         </View></TouchableWithoutFeedback>
         }
          {this.state.city?<BoxShadow setting={shadowOpt2}>
@@ -310,7 +384,7 @@ style={{
         <View style={{width: '100%', height: 38, alignSelf: 'center',
          backgroundColor: '#878383',marginTop: 29, justifyContent: 'center', }}>
         <Text style={{fontFamily: 'camptonBold', fontSize: 12, color: '#D9CBCB', marginLeft: 11}}>
-        {this.state.setCity?this.state.setCity:"CITY"}</Text>
+        {this.state.setCity?this.state.setCity:params.phone}</Text>
         </View></TouchableWithoutFeedback>}
         
  </View>

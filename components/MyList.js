@@ -13,7 +13,8 @@ import {
   ScrollView,
   Dimensions,
   FlatList,
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import axios from 'axios';
@@ -27,6 +28,7 @@ import {
   falseMyList, falseSearch, trueNot,
   falseNot
 } from "../actions/index";
+var SharedPreferences = require("react-native-shared-preferences");
 const api_key = '114063_a93666d11c33ea8dccac';
 
 const mapStateToProps = state => {
@@ -92,9 +94,68 @@ class reduxMyList extends Component{
     this.props.falseNot("not");
     this.props.navigation.navigate('Described',)
   }
+  listGet(token){
+    var config = {
+      headers: {'Authorization': "Bearer " + token}
+    };
+    axios
+    .get("http://app.kalewo.ng/api/getlistitems/"+this.state.id,
+    config)
+    .then(response => {
+      console.log(response);
+      var len = response.data ? response.data.data.length : null;
+      console.log(len+"--len");
+      for(let i = 0;i<len;i++){
+        console.log(response.data.data[i].resource_id+" ::resource_id");
+        axios
+        .get("http://api.dacast.com/v2/vod/"+response.data.data[i].resource_id+"?apikey=" + api_key + "&_format=JSON")
+        .then(response => {
+         console.log(response);
+         var len = response.data ? response.data.length : null;
+         console.log(len+"<<<len");
+         let row = response.data;
+         this.setState(
+          prevState => ({
+            list: [...prevState.list, row]
+          }),
+         );
+        })
+        .catch(error => {
+       //   this.setState({ regLoader: false });
+          Alert.alert("Error", 'get vod error', [
+            { text: "OK" }
+          ]);
+          console.log(JSON.stringify(error));
+        });
+      }
+  /*    this.props.navigation.navigate("Described", {token: response.data.success.token,
+      id: response.data.success.id});*/
+      this.setState({regLoader: false});
+    })
+    .catch(error => {
+      this.setState({regLoader: false});
+      Alert.alert(
+        "Error",
+        "get list items error"+JSON.stringify(error.response.data.error),
+        [{ text: "OK" }]
+      );
+      console.log(JSON.stringify(error.response.data.error));
+    });
+  }
   componentDidMount() {
-  
-    }
+    this.setState({regLoader: true});
+    SharedPreferences.getItem("key2", function(value){
+      if(value){
+      this.setState({id: value})    
+      }   
+    }.bind(this));
+  SharedPreferences.getItem("key1", function(value){
+      if(value){
+      this.listGet(value)
+      this.setState({token: value}, );
+      }   
+    }.bind(this));
+  }
     static navigationOptions = {
       header: null,
   };
@@ -102,11 +163,105 @@ class reduxMyList extends Component{
 constructor(props) {
   super(props);
   this.state = {
+    id: '',
+    token: '',
+    list: []
   };
+  this.listGet = this.listGet.bind(this);
 }
-
+  delete(id){
+    var config = {
+      headers: {'Authorization': "Bearer " + this.state.token}
+    };
+    axios
+    .get("http://app.kalewo.ng/api/deletelistitem/"+id,
+    config)
+    .then(response => {
+    //  console.log(response);
+      Alert.alert(
+        "Success",
+        "Video successfully removed",
+        [{ text: "OK" }]
+      );
+      this.deleteItemById(id);
+      this.setState({regLoader: false});
+    })
+    .catch(error => {
+      this.setState({regLoader: false});
+      Alert.alert(
+        "Error",
+        "get list items error"+JSON.stringify(error.response.data.error),
+        [{ text: "OK" }]
+      );
+      console.log(JSON.stringify(error.response.data.error));
+    });
+  }
+  deleteItemById = id => {
+    const filteredData = this.state.list.filter(item => item.id !== id);
+    this.setState({ list: filteredData });
+  }
   render() {
- 
+    const items = 
+    (
+      <FlatList
+        data={this.state.list}
+        renderItem={({ item }) => (
+          <ScrollView 
+contentContainerStyle={{flexGrow: 1}}
+      keyboardShouldPersistTaps='always'  horizontal={true}
+                                                         showsVerticalScrollIndicator={false}
+                                                         automaticallyAdjustContentInsets={false}
+                                                         directionalLockEnabled={true}
+                                                         bounces={false}
+                                                         scrollsToTop={false}>
+       <View style={{flexDirection: 'row', height: 188, width: '100%', marginTop: 18, 
+       backgroundColor: '#2F2B2B', alignItems: 'center'}}>
+        {item.pictures.thumbnail[0] ? (
+                <Image
+                  style={{width: 111, height: 168, borderRadius: 6, 
+                                   marginLeft: 20, }}
+                  resizeMode="contain"
+                  source={{ uri: item.pictures.thumbnail[0] }}
+                />
+              ) :
+       <Image resizeMode="contain"
+                                   style={{width: 111, height: 168, borderRadius: 6, 
+                                   marginLeft: 20, }}
+                                   source={require('../thisit.png')}/>}
+        <View style={{height: 102, flexDirection: 'column', 
+        justifyContent: 'space-between', marginLeft: 20}}>
+        <Text style={{fontFamily: 'camptonBold', fontSize: 20, color: 'white'}}>
+        {item.title}
+        </Text>
+        <Text numberOfLines={1}
+        style={{fontFamily: 'camptonLight', fontSize: 17, color: '#979292'}}>
+         {item.description}
+        </Text>
+        <Text style={{fontFamily: 'camptonLight', fontSize: 17, color: '#979292'}}>
+         Duration:{item.duration}
+        </Text>
+        <View style={{width: 208, height: 2, borderRadius: 5,
+         backgroundColor: '#C4C4C4'}}>
+        <View style={{height: '100%', width: '60%', borderRadius: 5,
+        backgroundColor: '#FCAA4A'}}>
+
+        </View>
+        </View>
+        </View>
+        <View style={{position: 'absolute', right: 19, top: 12,
+        height: 17, width: 17,}}>
+        <TouchableOpacity 
+        onPress={this.delete.bind(this, item.id)}>
+        <View style={{flex: 1}}>
+        <Image resizeMode="contain"
+                                   style={{flex: 1}}
+                                   source={require('../error.png')}/>
+        </View></TouchableOpacity></View>
+       </View></ScrollView>
+        )}
+      //  keyExtractor = {({item}) => item.id}   
+      />
+    );
     return (
        <View style={{flex: 1, backgroundColor: '#000'}}>
        <StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content'/>
@@ -125,52 +280,7 @@ constructor(props) {
                                    style={{width: 20, height: 25,opacity: 0}}
                                    source={require('../clear.png')}/>
        </View>
-       <ScrollView 
-      keyboardShouldPersistTaps='always'  showsHorizontalScrollIndicator={false}
-                                                         showsVerticalScrollIndicator={false}
-                                                         automaticallyAdjustContentInsets={false}
-                                                         directionalLockEnabled={true}
-                                                         bounces={false}
-                                                         scrollsToTop={false}>
-<ScrollView 
-contentContainerStyle={{flexGrow: 1}}
-      keyboardShouldPersistTaps='always'  horizontal={true}
-                                                         showsVerticalScrollIndicator={false}
-                                                         automaticallyAdjustContentInsets={false}
-                                                         directionalLockEnabled={true}
-                                                         bounces={false}
-                                                         scrollsToTop={false}>
-       <View style={{flexDirection: 'row', height: 188, width: '100%', marginTop: 18, 
-       backgroundColor: '#2F2B2B', alignItems: 'center'}}>
-       <Image resizeMode="contain"
-                                   style={{width: 111, height: 168, borderRadius: 6, 
-                                   marginLeft: 20, }}
-                                   source={require('../thisit.png')}/>
-        <View style={{height: 102, flexDirection: 'column', 
-        justifyContent: 'space-between', marginLeft: 20}}>
-        <Text style={{fontFamily: 'camptonBold', fontSize: 20, color: 'white'}}>
-        This is it
-        </Text>
-        <Text style={{fontFamily: 'camptonLight', fontSize: 17, color: '#979292'}}>
-         Season 2 Episode 3
-        </Text>
-        <Text style={{fontFamily: 'camptonLight', fontSize: 17, color: '#979292'}}>
-         Duration:2hrs 40mins
-        </Text>
-        <View style={{width: 208, height: 2, borderRadius: 5,
-         backgroundColor: '#C4C4C4'}}>
-        <View style={{height: '100%', width: '60%', borderRadius: 5,
-        backgroundColor: '#FCAA4A'}}>
-
-        </View>
-        </View>
-        </View>
-        <View style={{height: 17, width: 17, position: 'absolute', right: 19, top: 12}}>
-        <Image resizeMode="contain"
-                                   style={{flex: 1}}
-                                   source={require('../error.png')}/>
-        </View>
-       </View></ScrollView></ScrollView>
+       {items}
        <View style={{width: '100%', height: 54, backgroundColor: 'black', 
       alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row',
       borderTopColor: '#FCAA4A', borderTopWidth: 1}}>

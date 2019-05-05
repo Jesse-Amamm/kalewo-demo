@@ -13,15 +13,23 @@ import {
   ScrollView,
   Dimensions,
   FlatList,
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import axios from 'axios';
 import {BoxShadow} from 'react-native-shadow';
 const api_key = '114063_a93666d11c33ea8dccac';
+var SharedPreferences = require("react-native-shared-preferences");
 export default class Decision extends Component{
   componentDidMount() {
-  
+    SharedPreferences.getItem("key1", function(value){
+      if(value){
+      this.setState({isLoggedIn: true});    
+      this.props.navigation.navigate('Described', 
+                )
+      }   
+    }.bind(this));
     }
   static navigationOptions = {
     header: null,
@@ -30,6 +38,8 @@ export default class Decision extends Component{
 constructor(props) {
   super(props);
   this.state = {
+    isLoggedIn: false,
+    token: ''
   };
 }
 
@@ -87,20 +97,23 @@ constructor(props) {
                 )}>
         <View style={{width: 189, height: 40, backgroundColor: 'black', 
         alignItems: 'center', justifyContent: 'center', }}>
-<Text style={{fontFamily: 'camptonBold', fontSize: 13, color: 'white',}}>
+        <Text style={{fontFamily: 'camptonBold', fontSize: 13, color: 'white',}}>
         JOIN FREE FOR A MONTH</Text>
         </View></TouchableWithoutFeedback></BoxShadow>
         </ImageBackground>
         </ScrollView>
         <View style={{height: 16, width:'100%', flexDirection: 'row', 
-        alignItems: 'center', justifyContent: 'space-around', marginBottom: 30}}>
-         <TouchableWithoutFeedback  onPress={() =>
+        alignItems: 'center', marginBottom: 30}}>
+         <TouchableOpacity  onPress={() =>
                 this.props.navigation.navigate('Login', 
                 )}>
-          <View><Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
+          <View style={{marginLeft: 10}}>
+          <Text style={{color: '#9A9797', fontSize: 15, fontFamily: 'camptonBold'}}>
           SIGN IN
-          </Text></View></TouchableWithoutFeedback>
-          <TouchableWithoutFeedback  onPress={() =>
+          </Text>
+          </View>
+          </TouchableOpacity>
+        {/*  <TouchableWithoutFeedback  onPress={() =>
                 this.props.navigation.navigate('Help', 
                 )}>
           <View><Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
@@ -111,7 +124,7 @@ constructor(props) {
           </Text>
           <Text style={{color: '#9A9797', fontSize: 12, fontFamily: 'camptonBold'}}>
           PLANS
-          </Text>
+          </Text>*/}
         </View>
        </View>
       </ImageBackground>

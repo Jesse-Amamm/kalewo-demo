@@ -15,18 +15,79 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   ScrollView,
-  TextInput
-
+  TextInput,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
+import axios from "axios";
+var SharedPreferences = require("react-native-shared-preferences");
 import LinearGradient from 'react-native-linear-gradient';
-//import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
-
-
 
 export default class Signup extends Component {
     constructor(props) {
     super(props);
+    this.state = {
+      email: '',
+      password: '',
+      regLoader: false
+    }
+  }
+  reg() {
+    let regg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/ ;
+    if(regg.test(this.state.email) === false)
+            {
+            Alert.alert(
+                'Error',
+                'Valid Email address is required',
+                [
+                  {text: 'OK'},
+                ],  ); 
+           }
+           else if (this.state.password.length < 8) {
+            Alert.alert(
+                'Error',
+                'Password is too short, It must be up to 8 characters',
+                [
+                  {text: 'OK'},
+                ],  ); 
+        }
+            else if(this.state.email.length < 1){
+            Alert.alert(
+                'Error',
+                'Email cannot be empty and must contain a valid Email Address',
+                [
+                  {text: 'OK'},
+                ],  ); 
+        }
+    else{
+    
+    this.setState({regLoader: true});
+      var bodyParameters = {
+        email: this.state.email,
+        password: this.state.password,
+      };
+      axios
+        .post("http://app.kalewo.ng/api/login", bodyParameters)
+        .then(response => {
+          console.log(response);
+          console
+          SharedPreferences.setItem("key1", response.data.success.token);
+          SharedPreferences.setItem("key2", JSON.stringify(response.data.success.id));
+          this.props.navigation.navigate("Described", 
+          {});
+          this.setState({regLoader: false});
+        })
+        .catch(error => {
+          this.setState({regLoader: false});
+          Alert.alert(
+            "Error",
+            (error.response.data.error.email?JSON.stringify(error.response.data.error.email)+'\n':'\n')+
+            (error.response.data.error.password?JSON.stringify(error.response.data.error.password)+'\n':'\n'),
+            [{ text: "OK" }]
+          );
+          console.log(JSON.stringify(error.response.data.error));
+        });
+    }
   }
   static navigationOptions = {
     header: null,
@@ -67,6 +128,8 @@ export default class Signup extends Component {
           <TextInput            returnKeyType={'next'}
                             underlineColorAndroid={'transparent'}
                             placeholder="Email address"
+                            value={this.state.email}
+                            onChangeText={(email) => this.setState({email})}
                                        placeholderStyle={{fontSize: 14, fontFamily: 'camptonLight'}}
                                        placeholderTextColor="#A09E9E"
 style={{
@@ -93,6 +156,8 @@ style={{
                             underlineColorAndroid={'transparent'}
                             placeholder="Password"
                             secureTextEntry={true}
+                            value={this.state.password}
+                            onChangeText={(password) => this.setState({password})}
                                        placeholderStyle={{fontSize: 14, fontFamily: 'camptonLight'}}
                                        placeholderTextColor="#A09E9E"
 style={{
@@ -113,13 +178,14 @@ style={{
          color: '#878383', alignSelf: 'center', marginTop: 17, 
          textDecorationLine: 'underline'}}>
          Forgot your email and password?</Text></View></TouchableWithoutFeedback>
-         <TouchableWithoutFeedback  onPress={() =>
-                this.props.navigation.navigate('Described', 
-                )}>
+         <TouchableWithoutFeedback  onPress={this.reg.bind(this)}>
                 <View style={{backgroundColor: '#FCAA4A', width: 98, height: 27, 
-         alignSelf: 'center', justifyContent: 'center', marginTop: 50}}>
+         alignSelf: 'center', justifyContent: 'center', marginTop: 50, marginBottom: 20}}>
+         {this.state.regLoader ? 
+            <ActivityIndicator color="white" />
+           :
          <Text style={{fontFamily: 'camptonBold', fontSize: 14, 
-         color: '#262728', alignSelf: 'center'}}>Sign In</Text>
+         color: '#262728', alignSelf: 'center'}}>Sign In</Text>}
          </View></TouchableWithoutFeedback>             
          </ScrollView>
          <TouchableWithoutFeedback  onPress={() =>

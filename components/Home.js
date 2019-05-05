@@ -17,9 +17,7 @@ import {
   Alert,
   TouchableOpacity
 } from "react-native";
-import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import axios from "axios";
-import { BoxShadow } from "react-native-shadow";
 import { connect } from "react-redux";
 import { sha256, sha224 } from "js-sha256";
 import {
@@ -39,7 +37,22 @@ import {
   falseSearch
 } from "../actions/index";
 const api_key = "114063_a93666d11c33ea8dccac";
+import { Share } from 'react-native';
 
+/*onClick() {
+  Share.share({
+    message: 'I am watching'+ +'blah blah, you can also watch for free by downloading kalewo',
+    url: 'http://bam.tech',
+    title: 'Wow, did you see that?'
+  }, {
+    // Android only:
+    dialogTitle: 'Share BAM goodness',
+    // iOS only:
+    excludedActivityTypes: [
+      'com.apple.UIKit.activity.PostToTwitter'
+    ]
+  })
+}*/
 const mapStateToProps = state => {
   return {
     home: state.home,
@@ -78,103 +91,80 @@ const query =
   "&function=get_resource_path&param1=2&param2=URL&param3=scr&param4=&param5=&param6=&param7=&param8=";
 const sign = sha256(key + query);
 class reduxHome extends Component {
-  componentDidMount() {
+ componentDidMount() {
     this.setState({ loading: true });
-    this.setState({ loading2: true });
     axios
-      .get("http://api.dacast.com/v2/channel?apikey=" + api_key + "&_format=JSON")
+      .get("http://api.dacast.com/v2/playlist?apikey=" + api_key + "&_format=JSON")
       .then(response => {
-        console.log(response);
         var len = response.data ? response.data.data.length : null;
-        console.log(len+"<<<len");
         for (let i = 0; i < len; i++) {
           let row = response.data.data[i];
-          console.log(row);
-          console.log(i);
-          console.log("djdn");
+          this.setState(
+            prevState => ({
+              playlist: [...prevState.playlist, row]
+            }),
+          );
+          let lenRow = row.content.list?row.content.list.length:null;
+          let arr = [];
+          for(let j = 0;j<lenRow;j++){
+            let box = row.content.list[j];
+            axios
+            .get("http://api.dacast.com/v2/vod/"+box.id+"?apikey=" + api_key + "&_format=JSON")
+            .then(response => {
+         //    console.log(response.data.duration+"voddd");
+             let row = response.data;
+           //  console.log(JSON.stringify(row)+"ddddd");
+            arr.push(row);
+            if(j == lenRow-1){
+         //     console.log(JSON.stringify(arr)+"<<<arraypp"+i+"<<<i"+"  "+j+"<<<j"+"\n");
+               this.setState(
+                   prevState => ({
+                     list: [...prevState.list, arr]
+                   }), 
+                 );
+             } 
+             
+            }).catch(error => {
+       //       this.setState({ loading: false });
+              Alert.alert("Error", 'Internal Server Error, please try again later', [
+                { text: "OK" }
+              ]);
+         //     console.log(JSON.stringify(error));
+            });
+          /*  */
+          }
+        }
+        })
+        .catch(error => {
+      //    this.setState({ loading: false });
+          Alert.alert("Error", 'Internal Server Error, please try again later', [
+            { text: "OK" }
+          ]);
+          console.log(error);
+        });
+     //   this.setState({ loading: true });
+        axios
+      .get("http://api.dacast.com/v2/channel?apikey=" + api_key + "&_format=JSON")
+      .then(response => {
+        var len = response.data ? response.data.data.length : null;
+        for (let i = 0; i < len; i++) {
+          let row = response.data.data[i];
           this.setState(
             prevState => ({
               ltvs: [...prevState.ltvs, row]
             }),
-            console.log(this.state.ltvs)
-          );
-        //  console.log(i);
-          console.log("ltvs");
+        );
         }
-        for (let i = 4; i < 7; i++) {
-          let row = response.data.data[i];
-          console.log(row);
-          console.log(i);
-          console.log("djdn");
-          this.setState(
-            prevState => ({
-              visual_radio: [...prevState.visual_radio, row]
-            }),
-            console.log(this.state.visual_radio[0])
-          );
-        }
-        console.log(this.state.visual_radio);
-        for (let i = 10; i < 11; i++) {
-          let row = response.data.data[i];
-          console.log(row);
-          console.log(i);
-          console.log("djdn");
-          this.setState(
-            prevState => ({
-              mn: [...prevState.mn, row]
-            }),
-            console.log(this.state.mn[0])
-          );
-          console.log(i);
-          console.log("miss nigeria");
-        }
-        this.setState({ loading: false });
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-        Alert.alert("Error", "Internal Server Error, please try again later", [
-          { text: "OK" }
-        ]);
-        console.log(error);
-      });
-    axios
-      .get("http://api.dacast.com//v2/vod?apikey=" + api_key)
-      .then(response => {
-        console.log(response);
-        var len = response.data.data ? response.data.data.length : null;
-        for (let i = 0; i < len; i++) {
-          let row = response.data.data[i];
-          console.log(row);
-          console.log(i);
-          console.log("djdn");
-          if (row.title.toLowerCase().indexOf("live recording") >= 0) {
-            console.log("it includes");
-            this.setState(
-              prevState => ({
-                mn: [...prevState.mn, row]
-              }),
-              console.log(this.state.mn[0])
-            );
-          } else {
-            this.setState(
-              prevState => ({
-                mnh: [...prevState.mnh, row]
-              }),
-              console.log(this.state.mnh[0])
-            );
-          }
-        }
-        this.setState({ loading2: false });
-      })
-      .catch(error => {
-        this.setState({ loading2: false });
-        Alert.alert("Error", "Please check your internet connection", [
-          { text: "OK" }
-        ]);
-        console.log(error);
-      });
-  }
-
+        this.setState({ loading: false});
+        })
+        .catch(error => {
+          this.setState({ loading: false });
+          Alert.alert("Error", 'Internal Server Error, please try again later', [
+            { text: "OK" }
+          ]);
+       //   console.log(error);
+        });
+    }
   static navigationOptions = {
     header: null
   };
@@ -188,12 +178,128 @@ class reduxHome extends Component {
       mn: [],
       loading: true,
       loading2: true,
-      mnh: []
+      mnh: [],
+      playlist: [],
+      list: []
     };
   }
 
   render() {
-    const movies = (
+    const new_found = this.state.playlist.map((movie, index) => (
+      <View>
+        <Text
+            style={{
+              color: "#FCAA4A",
+              fontFamily: "camptonBold",
+              fontSize: 14,
+              marginTop: 27,
+              marginLeft: 25,
+              marginBottom: 14
+            }}
+          >
+            {movie.title}
+          </Text>
+          <FlatList
+      data={this.state.list[index]}
+      horizontal={true}
+      renderItem={({ item }) => (
+        <TouchableWithoutFeedback
+          onPress={() =>
+            this.props.navigation.navigate("Selection", {
+              title: item.title,
+              image: item.pictures.thumbnail[0],
+              description: item.description,
+              more: this.state.list[index],
+              uri: item.share_code.facebook,
+              duration: item.duration,
+              id: item.id
+            })
+          }
+        >
+          <View style={{ width: 111, height: 168, marginLeft: 11 }}>
+            {item.pictures.thumbnail[0] ? (
+              <Image
+                style={{ width: 111, height: 168 }}
+                resizeMode="cover"
+                source={{ uri: item.pictures.thumbnail[0] }}
+              />
+            ) : (
+              <Image
+                style={{ width: 111, height: 168 }}
+                resizeMode="cover"
+                source={require("../thisit.png")}
+              />
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+      
+      keyExtractor={(item, index) => `list-item-${index}`}
+    />  
+       </View>
+    ));
+    const list = (
+      <FlatList
+      data={this.state.list[0]}
+      horizontal={true}
+      renderItem={({ item }) => (
+        <TouchableWithoutFeedback
+          onPress={() =>
+            this.props.navigation.navigate("Selection", {
+              title: item.title,
+              image: item.pictures.thumbnail[0],
+              description: item.description,
+              more: this.state.ltvs,
+              uri: item.share_code.facebook,
+              duration: item.duration,
+              id: item.id
+            })
+          }
+        >
+          <View style={{ width: 111, height: 168, marginLeft: 11 }}>
+            {item.pictures.thumbnail[0] ? (
+              <Image
+                style={{ width: 111, height: 168 }}
+                resizeMode="cover"
+                source={{ uri: item.pictures.thumbnail[0] }}
+              />
+            ) : (
+              <Image
+                style={{ width: 111, height: 168 }}
+                resizeMode="cover"
+                source={require("../thisit.png")}
+              />
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+      
+      keyExtractor={(item, index) => `list-item-${index}`}
+    />  
+    )
+    const playlist = (
+      <FlatList
+        data={this.state.playlist}
+        renderItem={({ item, key }) => (
+          <View>
+        <Text
+            style={{
+              color: "#FCAA4A",
+              fontFamily: "camptonBold",
+              fontSize: 14,
+              marginTop: 27,
+              marginLeft: 25,
+              marginBottom: 14
+            }}
+          >
+            {item.title}
+          </Text>
+       </View>
+        )}
+        keyExtractor={(item, index) => `list-item-${index}`}
+      />
+    );
+  /*  const movies = (
       <FlatList
         data={this.state.ltvs}
         horizontal={true}
@@ -209,8 +315,8 @@ class reduxHome extends Component {
               })
             }
           >
-            <View style={{ width: 111, height: 168, marginLeft: 22 }}>
-              {item.pictures.thumbnail ? (
+            <View style={{ width: 111, height: 168, marginLeft: 11 }}>
+              {item.pictures.thumbnail[0] ? (
                 <Image
                   style={{ width: 111, height: 168 }}
                   resizeMode="cover"
@@ -245,8 +351,8 @@ class reduxHome extends Component {
               })
             }
           >
-            <View style={{ width: 111, height: 168, marginLeft: 22 }}>
-              {item.pictures.thumbnail ? (
+            <View style={{ width: 111, height: 168, marginLeft: 11 }}>
+              {item.pictures.thumbnail[0] ? (
                 <Image
                   style={{ width: 111, height: 168 }}
                   resizeMode="cover"
@@ -281,8 +387,8 @@ class reduxHome extends Component {
               })
             }
           >
-            <View style={{ width: 111, height: 168, marginLeft: 22 }}>
-              {item.pictures.thumbnail ? (
+            <View style={{ width: 111, height: 168, marginLeft: 11 }}>
+              {item.pictures.thumbnail[0] ? (
                 <Image
                   style={{ width: 111, height: 168 }}
                   resizeMode="cover"
@@ -317,8 +423,8 @@ class reduxHome extends Component {
               })
             }
           >
-            <View style={{ width: 111, height: 168, marginLeft: 22 }}>
-              {item.pictures.thumbnail ? (
+            <View style={{ width: 111, height: 168, marginLeft: 11 }}>
+              {item.pictures.thumbnail[0] ? (
                 <Image
                   style={{ width: 111, height: 168 }}
                   resizeMode="cover"
@@ -336,7 +442,7 @@ class reduxHome extends Component {
         )}
         keyExtractor={(item, index) => index}
       />
-    );
+    );*/
     return (
       <View style={{ flex: 1, backgroundColor: "#000" }}>
         <StatusBar
@@ -344,7 +450,13 @@ class reduxHome extends Component {
           translucent={true}
           barStyle="light-content"
         />
-        <ScrollView
+        {this.state.loading ? (
+            <View style={{flex: 1, alignItems: 'center', 
+            justifyContent: 'center', flexGrow: 1, paddingTop: 20}}>
+            <ActivityIndicator color="white" size="large"/>
+            </View>
+          ) :
+          <ScrollView
           keyboardShouldPersistTaps="always"
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -353,9 +465,7 @@ class reduxHome extends Component {
           bounces={false}
           scrollsToTop={false}
         >
-          {this.state.loading ? (
-            <ActivityIndicator color="white" />
-          ) : (
+           
             <ImageBackground
               style={{
                 width: "100%",
@@ -376,7 +486,7 @@ class reduxHome extends Component {
               />
               <ScrollView />
             </ImageBackground>
-          )}
+          
           <View
             style={{
               width: "100%",
@@ -883,9 +993,6 @@ class reduxHome extends Component {
               flexDirection: "column"
             }}
           />
-          {this.state.loading ? (
-            <ActivityIndicator color="white" />
-          ) : (
             <Text
               numberOfLines={1}
               style={{
@@ -900,7 +1007,6 @@ class reduxHome extends Component {
             >
               {this.state.ltvs[1].title}
             </Text>
-          )}
           <View
             style={{
               flexDirection: "row",
@@ -937,7 +1043,7 @@ class reduxHome extends Component {
                 fontFamily: "camptonBold"
               }}
             >
-              1hr34mins
+              LIVE
             </Text>
             <View
               style={{
@@ -954,7 +1060,7 @@ class reduxHome extends Component {
                 fontFamily: "camptonBold"
               }}
             >
-              Drama
+              LIVE STREAM
             </Text>
           </View>
           <TouchableWithoutFeedback
@@ -964,7 +1070,8 @@ class reduxHome extends Component {
                 image: this.state.ltvs[1].pictures.thumbnail[0],
                 description: this.state.ltvs[1].description,
                 more: this.state.ltvs,
-                uri: this.state.ltvs[1].share_code.facebook
+                uri: this.state.ltvs[1].share_code.facebook,
+                id: this.state.ltvs[1].id
               })
             }
           >
@@ -998,59 +1105,11 @@ class reduxHome extends Component {
               </Text>
             </View>
           </TouchableWithoutFeedback>
-          <Text
-            style={{
-              color: "#FCAA4A",
-              fontFamily: "camptonBold",
-              fontSize: 14,
-              marginTop: 27,
-              marginLeft: 25,
-              marginBottom: 14
-            }}
-          >
-            Live Tv Streaming
-          </Text>
-          {this.state.loading ? <ActivityIndicator color="white" /> : movies}
-          <Text
-            style={{
-              color: "#FCAA4A",
-              fontFamily: "camptonBold",
-              fontSize: 14,
-              marginTop: 27,
-              marginLeft: 25,
-              marginBottom: 14
-            }}
-          >
-            Popular on Kalewo
-          </Text>
-          {this.state.loading ? <ActivityIndicator color="white" /> : visual}
-          <Text
-            style={{
-              color: "#FCAA4A",
-              fontFamily: "camptonBold",
-              fontSize: 14,
-              marginTop: 27,
-              marginLeft: 25,
-              marginBottom: 14
-            }}
-          >
-            Miss Nigeria 2018 Highlights
-          </Text>
-          {this.state.loading ? <ActivityIndicator color="white" /> : mnh}
-          <Text
-            style={{
-              color: "#FCAA4A",
-              fontFamily: "camptonBold",
-              fontSize: 14,
-              marginTop: 27,
-              marginLeft: 25,
-              marginBottom: 14
-            }}
-          >
-            Miss Nigeria
-          </Text>
-          {this.state.loading ? <ActivityIndicator color="white" /> : mn}
+          
+          {new_found}
         </ScrollView>
+          }
+        
       </View>
     );
   }

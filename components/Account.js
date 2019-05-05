@@ -28,6 +28,7 @@ import {
   falseNot
 } from "../actions/index";
 const api_key = '114063_a93666d11c33ea8dccac';
+var SharedPreferences = require("react-native-shared-preferences");
 
 const mapStateToProps = state => {
 return {
@@ -62,10 +63,49 @@ return {
 };
 };
 class reduxAccount extends Component{
-  
+  listGet(token){
+    var config = {
+      headers: {'Authorization': "Bearer " + token}
+    };
+    axios
+    .get("http://app.kalewo.ng/api/user",
+    config)
+    .then(response => {
+      console.log(response.data.data);
+      var len = response.data ? response.data.data.length : null;
+      console.log(len+"--len");
+      this.setState(
+        prevState => ({
+          userDetail: [...prevState.userDetail, response.data.data]
+        }), () => {"state"+ console.log(this.state.userDetail[0].name); }
+      );
+    //  response.data.success
+      this.setState({regLoader: false});
+    })
+    .catch(error => {
+      this.setState({regLoader: false});
+      Alert.alert(
+        "Error",
+        "Profile error"+JSON.stringify(error.response.message),
+        [{ text: "OK" }]
+      );
+      console.log("kl"+ JSON.stringify(error));
+    });
+  }
   componentDidMount() {
-  
-    }
+    this.setState({regLoader: true});
+    SharedPreferences.getItem("key2", function(value){
+      if(value){
+      this.setState({id: value})    
+      }   
+    }.bind(this));
+  SharedPreferences.getItem("key1", function(value){
+      if(value){
+      this.listGet(value)
+      this.setState({token: value}, );
+      }   
+    }.bind(this));
+  }
     static navigationOptions = {
       header: null,
   };
@@ -73,7 +113,11 @@ class reduxAccount extends Component{
 constructor(props) {
   super(props);
   this.state = {
-    cleared: false
+    cleared: false,
+    token: '',
+    id: '',
+    regLoader: false,
+    userDetail: []
   };
 }
 homer(){
@@ -98,8 +142,9 @@ search(){
 }
 
   render() {
- 
+    
     return (
+      
         <View style={{flex: 1, backgroundColor: '#000'}}>
        <StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content'/>
        <View 
@@ -132,10 +177,15 @@ search(){
        borderColor: '#FCAA4A', borderWidth: 1, marginTop: 29,
        alignSelf: 'center', justifyContent: 'center', }}>
        <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
-        source={require('../pp.png')}/>
+        source={require('../user.png')}/>
        </View>
        <TouchableWithoutFeedback onPress={() =>
-                this.props.navigation.navigate('EditProfile', 
+                this.props.navigation.navigate('EditProfile', {
+                  name: this.state.userDetail[0].name,
+                  email: this.state.userDetail[0].email,
+                  phone: this.state.userDetail[0].phone,
+                  token: this.state.token
+                }
                 )}>
        <View style={{position: 'absolute', top: 24, right: 42,
        width: 25, height: 23}}>
@@ -143,13 +193,13 @@ search(){
         source={require('../edit.png')}/>
        </View></TouchableWithoutFeedback>
        <Text style={{fontFamily: 'camptonBold', color: 'white', marginTop: 11, fontSize: 19,
-       alignSelf: 'center'}}>Tolu Ade</Text>
+       alignSelf: 'center'}}>{this.state.userDetail[0]?this.state.userDetail[0].name:null}</Text>
        <View style={{flexDirection: 'row', width: 140, justifyContent: 'space-between',
        alignSelf: 'center',marginTop: 18}}>
        <Image style={{width: 16, height: 12}} resizeMode="contain"
         source={require('../emailY.png')}/>
         <Text style={{color: '#C4C4C4', fontFamily: 'camptonLight', fontSize: 12}}>
-        ToluAde@gmail.com
+        {this.state.userDetail[0]?this.state.userDetail[0].email:null}
         </Text>
        </View>
        <View style={{flexDirection: 'row', width: 115, justifyContent: 'space-between',
@@ -157,7 +207,7 @@ search(){
        <Image style={{width: 12, height: 13}} resizeMode="contain"
         source={require('../phoneY.png')}/>
         <Text style={{color: '#C4C4C4', fontFamily: 'camptonLight', fontSize: 12}}>
-        0612-3456-7789
+        {this.state.userDetail[0]?this.state.userDetail[0].phone:null}
         </Text>
        </View>
        <View style={{marginTop: 11, backgroundColor: '#FCAA4A', width: 114, height: 15, 
