@@ -16,7 +16,8 @@ import {
   FlatList,
   Alert,
   ViewPagerAndroid,
-  TouchableOpacity
+  TouchableOpacity,
+  Share
 } from "react-native";
 import Carousel, { ParallaxImage } from "react-native-snap-carousel";
 import axios from "axios";
@@ -77,7 +78,16 @@ const mapDispatchToProps = dispatch => {
 };
 class reduxSelection extends Component {
   componentDidUpdate() {}
-
+  ShareMessage=()=>
+    {
+      const { params } = this.props.navigation.state;
+            Share.share(
+            {
+                
+              message: 'I am watching '+ params.title +', you can also watch for free by downloading kalewo (download link)'
+            
+            }).then(result => console.log(result)).catch(errorMsg => console.log(errorMsg));
+    }
   componentDidMount() {
     SharedPreferences.getItem("key2", function(value){
       if(value){
@@ -385,11 +395,12 @@ class reduxSelection extends Component {
                 alignItems: "center"
               }}
             >
+            <TouchableOpacity onPress={this.ShareMessage.bind(this)}>
               <Image
                 resizeMode="contain"
                 style={{ width: 20, height: 20 }}
                 source={require("../shareG.png")}
-              />
+              /></TouchableOpacity>
               <Text
                 style={{
                   fontFamily: "camptonLight",

@@ -19,6 +19,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { connect } from "react-redux";
+var SharedPreferences = require("react-native-shared-preferences");
 import {
   trueAccount,
   trueHelp,
@@ -48,7 +49,8 @@ const mapStateToProps = state => {
     myList: state.myList,
     help: state.help,
     loggedIn: state.loggedIn,
-    not: state.not
+    not: state.not,
+    PP: state.PP
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -72,15 +74,65 @@ const mapDispatchToProps = dispatch => {
   };
 };
 class reduxSideBar extends Component {
-  componentDidMount() {}
+  logOut(){
+    SharedPreferences.clear();
+    this.props.navigation.navigate('Login')
+  }
+  componentDidMount() {
+    this.setState({regLoader: true});
+    SharedPreferences.getItem("key2", function(value){
+      if(value){
+      this.setState({id: value})    
+      }   
+    }.bind(this));
+  SharedPreferences.getItem("key1", function(value){
+      if(value){
+     //   this.setState({regLoader: true})
+      this.nameGet(value)
+  //    this.otherlistGet(value)
+      this.setState({token: value}, );
+      }   
+    }.bind(this));
+  }
   static navigationOptions = {
     header: null
   };
-
+  nameGet(token){
+    var config = {
+    headers: {'Authorization': "Bearer " + token}
+  };
+  axios
+  .get("http://app.kalewo.ng/api/user",
+  config)
+  .then(response => {
+    console.log(response.data.data);
+    var len = response.data ? response.data.data.length : null;
+    console.log(len+"--len");
+    this.setState(
+      prevState => ({
+        userDetail: [...prevState.userDetail, response.data.data]
+      }), () => {"state"+ console.log(this.state.userDetail[0].name); }
+    );
+  //  response.data.success
+    this.setState({regLoader: false});
+  })
+  .catch(error => {
+    this.setState({regLoader: false});
+    Alert.alert(
+      "Error",
+      "Profile error"+JSON.stringify(error.response.message),
+      [{ text: "OK" }]
+    );
+    console.log("kl"+ JSON.stringify(error));
+  });
+}
   constructor(props) {
     super(props);
     this.state = {
-      pressed: ""
+      pressed: "",
+      token: '',
+      id: '',
+      userDetail: []
     };
     this.cll = this.cll.bind(this);
   }
@@ -128,6 +180,19 @@ class reduxSideBar extends Component {
     this.props.navigation.navigate("Described");
   }
   render() {
+    let picture = '';
+    if(this.props.PP){
+      picture = <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
+      source={{uri: this.props.PP}}/>
+    }else{
+      if(this.state.userDetail[0]){
+        picture = <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
+        source={{uri: this.state.userDetail[0].photo}}/>
+      }else{
+        picture = <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
+        source={require('../user.png')}/>
+      }
+    }
     return (
       <View
         style={{
@@ -154,16 +219,7 @@ class reduxSideBar extends Component {
             justifyContent: "center"
           }}
         >
-          <Image
-            style={{
-              width: 142,
-              height: 142,
-              borderRadius: 71,
-              alignSelf: "center"
-            }}
-            resizeMode="cover"
-            source={require("../userGeneric.png")}
-          />
+          {picture}
         </View>
         <Text
           style={{
@@ -174,7 +230,7 @@ class reduxSideBar extends Component {
             color: "white"
           }}
         >
-          Tolu Ade
+          {this.state.userDetail[0]?this.state.userDetail[0].name:null}
         </Text>
         <TouchableOpacity onPress={this.profile.bind(this)}>
           <Text
@@ -193,7 +249,7 @@ class reduxSideBar extends Component {
             width: "100%",
             height: 1,
             backgroundColor: "#878383",
-            marginTop: 51
+            marginTop: 25
           }}
         />
         <TouchableWithoutFeedback onPress={this.lister.bind(this)}>
@@ -309,7 +365,7 @@ class reduxSideBar extends Component {
           style={{ width: "100%", height: 1, backgroundColor: "#878383" }}
         />
         <TouchableWithoutFeedback
-          onPress={() => this.props.navigation.navigate("Home")}
+          onPress={this.logOut.bind(this)}
         >
           <View
             style={{

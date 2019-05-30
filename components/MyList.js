@@ -206,14 +206,6 @@ constructor(props) {
       <FlatList
         data={this.state.list}
         renderItem={({ item }) => (
-          <ScrollView 
-contentContainerStyle={{flexGrow: 1}}
-      keyboardShouldPersistTaps='always'  horizontal={true}
-                                                         showsVerticalScrollIndicator={false}
-                                                         automaticallyAdjustContentInsets={false}
-                                                         directionalLockEnabled={true}
-                                                         bounces={false}
-                                                         scrollsToTop={false}>
        <View style={{flexDirection: 'row', height: 188, width: '100%', marginTop: 18, 
        backgroundColor: '#2F2B2B', alignItems: 'center'}}>
         {item.pictures.thumbnail[0] ? (
@@ -230,7 +222,9 @@ contentContainerStyle={{flexGrow: 1}}
                                    source={require('../thisit.png')}/>}
         <View style={{height: 102, flexDirection: 'column', 
         justifyContent: 'space-between', marginLeft: 20}}>
-        <Text style={{fontFamily: 'camptonBold', fontSize: 20, color: 'white'}}>
+        <Text 
+        numberOfLines={1}
+        style={{fontFamily: 'camptonBold', fontSize: 19, color: 'white'}}>
         {item.title}
         </Text>
         <Text numberOfLines={1}
@@ -240,7 +234,7 @@ contentContainerStyle={{flexGrow: 1}}
         <Text style={{fontFamily: 'camptonLight', fontSize: 17, color: '#979292'}}>
          Duration:{item.duration}
         </Text>
-        <View style={{width: 208, height: 2, borderRadius: 5,
+        <View style={{width: '56%', height: 2, borderRadius: 5,
          backgroundColor: '#C4C4C4'}}>
         <View style={{height: '100%', width: '60%', borderRadius: 5,
         backgroundColor: '#FCAA4A'}}>
@@ -257,7 +251,7 @@ contentContainerStyle={{flexGrow: 1}}
                                    style={{flex: 1}}
                                    source={require('../error.png')}/>
         </View></TouchableOpacity></View>
-       </View></ScrollView>
+       </View>
         )}
       //  keyExtractor = {({item}) => item.id}   
       />
@@ -291,13 +285,13 @@ contentContainerStyle={{flexGrow: 1}}
         source={require('../homew.png')}/>
         <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: 'white'}}>HOME</Text>
        </View></TouchableWithoutFeedback>
-       <TouchableWithoutFeedback  onPress={this.search.bind(this)}>
+     {/*  <TouchableWithoutFeedback  onPress={this.search.bind(this)}>
        <View style={{flexDirection: 'column', width: 34, height: 29, 
        justifyContent: 'space-around', alignItems: 'center'}}>
         <Image style={{width: 20, height: 20, }} resizeMode="stretch"
         source={require('../searcher.png')}/>
         <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: 'white'}}>SEARCH</Text>
-       </View></TouchableWithoutFeedback>
+       </View></TouchableWithoutFeedback> */}
        <TouchableWithoutFeedback onPress={this.account.bind(this)}>
        <View style={{flexDirection: 'column', width: 40, height: 29, 
        justifyContent: 'space-around', alignItems: 'center'}}>

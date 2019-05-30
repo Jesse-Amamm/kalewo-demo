@@ -132,10 +132,13 @@ constructor(props) {
   }
 }
 /*
-react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+4
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
 adb reverse tcp:8081 tcp:8081
 adb shell input text "RR"
+googlePlacesApikey -   AIzaSyDODll2lx4kP6JZd8tiyAEHlvnZvvhDJb8 
 
+token  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC93aGF2aXQtYXBpLmhlcm9rdWFwcC5jb21cL2FwaVwvYXV0aFwvYXV0aGVudGljYXRlIiwiaWF0IjoxNTU4NzEwOTY5LCJleHAiOjE2MDY3MTA5NjksIm5iZiI6MTU1ODcxMDk2OSwianRpIjoiV2pidEF0ckhGcWJDSWhRRiIsInN1YiI6IjU0N2U4YjkwLTZjZDktMTFlOS04ODQ1LTEzNjcwZjZmNTBhOCIsInBydiI6Ijg3ZTBhZjFlZjlmZDE1ODEyZmRlYzk3MTUzYTE0ZTBiMDQ3NTQ2YWEifQ.z2doo5406JYpTx9oivba7-jdZqVkQyX6VHastaRZ7yo
 */
 const styles = StyleSheet.create({
 });

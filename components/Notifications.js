@@ -203,13 +203,13 @@ contentContainerStyle={{flexGrow: 1}}
         source={require('../homew.png')}/>
         <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: 'white'}}>HOME</Text>
        </View></TouchableWithoutFeedback>
-       <TouchableWithoutFeedback  onPress={this.search.bind(this)}>
+    {/*   <TouchableWithoutFeedback  onPress={this.search.bind(this)}>
        <View style={{flexDirection: 'column', width: 34, height: 29, 
        justifyContent: 'space-around', alignItems: 'center'}}>
         <Image style={{width: 20, height: 20, }} resizeMode="stretch"
         source={require('../searcher.png')}/>
         <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: 'white'}}>SEARCH</Text>
-       </View></TouchableWithoutFeedback>
+       </View></TouchableWithoutFeedback>*/}
        <TouchableWithoutFeedback onPress={this.account.bind(this)}>
        <View style={{flexDirection: 'column', width: 40, height: 29, 
        justifyContent: 'space-around', alignItems: 'center'}}>

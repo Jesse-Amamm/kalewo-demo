@@ -39,6 +39,8 @@ import Notifications from './components/Notifications';
 import EditProfile from './components/EditProfile';
 import FAQ from './components/FAQ';
 import Help from './components/Help';
+import ContactUs from './components/ContactUs';
+import AppInfo from './components/AppInfo'
 import {
   createStackNavigator,
   createAppContainer, DrawerNavigator, DrawerItems
@@ -66,9 +68,6 @@ const Screens = createStackNavigator({
   MyList: {
       screen: MyList,
   },
-  ResetPassword: {
-    screen: ResetPassword,
-  },
   Described: {
       screen: Described
   },
@@ -87,9 +86,6 @@ const Screens = createStackNavigator({
   const LoggedIn = createStackNavigator({
     MyList: {
         screen: MyList,
-    },
-    ResetPassword: {
-      screen: ResetPassword,
     },
     Described: {
         screen: Described
@@ -148,6 +144,9 @@ const HomeStack = createStackNavigator({
   EditProfile: EditProfile,
    FAQ: FAQ,
    Video: VideoComponent,
+   ContactUs: ContactUs,
+   AppInfo: AppInfo,
+   ResetPassword: ResetPassword
 },{
   initialRouteName: "Home"
 },);
@@ -157,6 +156,11 @@ const LoggedHomeStack = createStackNavigator({
   EditProfile: EditProfile,
    FAQ: FAQ,
    Video: VideoComponent,
+   ContactUs: ContactUs,
+   AppInfo: AppInfo,
+   ResetPassword: ResetPassword,
+   Signup: Signup, 
+  Login: Login,
 },);
 class reduxApp  extends Component {
   constructor(props) {

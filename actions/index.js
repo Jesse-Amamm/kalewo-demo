@@ -46,4 +46,9 @@ export const trueLoggedIn = loggedIn => ({type:
 export const falseLoggedIn = loggedIn => ({type:
     "FALSE_LOGGEDIN", payload: loggedIn
     });
-  
+export const setPP = (payload) => {
+        return {
+          type: "setPP",
+          payload
+        }
+}  

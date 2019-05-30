@@ -14,3 +14,4 @@ export const TRUE_LOGGEDIN = "TRUE_LOGGEDIN";
 export const FALSE_LOGGEDIN = "FALSE_LOGGEDIN";
 export const TRUE_NOT = "TRUE_NOT";
 export const FALSE_NOT = "FALSE_NOT";
+export const setPP = "setPP";

@@ -13,7 +13,8 @@ import {
   ScrollView,
   Dimensions,
   FlatList,
-  Alert
+  Alert,
+  TextInput
 } from 'react-native';
 import Carousel, { ParallaxImage } from 'react-native-snap-carousel';
 import axios from 'axios';
@@ -61,16 +62,10 @@ return {
     falseNot: not => dispatch(falseNot(not)),
 };
 };
-class reduxHelp extends Component{
+class reduxContactUs extends Component{
   
   componentDidMount() {
-    this.props.trueMore("more");
-    this.props.trueHelp("help");
-    this.props.falseAccount("account");
-    this.props.falseNot("not");
-    this.props.falseSearch("search");
-    this.props.falseHome("home");
-    this.props.falseMyList("myList");
+  
     }
     static navigationOptions = {
       header: null,
@@ -79,7 +74,10 @@ class reduxHelp extends Component{
 constructor(props) {
   super(props);
   this.state = {
-    cleared: false
+    cleared: false,
+    seen: false,
+    height: 0,
+    message: ''
   };
 }
 homer(){
@@ -112,98 +110,96 @@ account(){
     this.props.falseNot("not");
     this.props.navigation.navigate('Described',)
   }
+  seen(){
+    this.setState({seen: !this.state.seen})
+  }
   render() {
  
     return (
         <View style={{flex: 1, backgroundColor: '#000'}}>
        <StatusBar backgroundColor='transparent' translucent={true} barStyle='light-content'/>
-       <View style={{backgroundColor: '#2F2B2B', width: '100%', height: 57+StatusBar.currentHeight, 
+       <View style={{backgroundColor: '#2F2B2B',  width: '100%', height: 57+StatusBar.currentHeight, 
        flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingLeft: 25,
        paddingRight: 25, paddingTop: StatusBar.currentHeight}}>
-        <TouchableWithoutFeedback>
-        <View style={{width: 15, height: 20,opacity: 0}}>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
+        <View style={{width: 15, height: 20,}}>
         <Image resizeMode="contain"
         style={{width: 15, height: 20,}}
         source={require('../backWhite.png')}/>
         </View></TouchableWithoutFeedback>
         <Text style={{fontFamily: 'camptonBold', fontSize: 21, color: 'white'}}>
-        Help</Text>
+         Contact Us</Text>
         <Image resizeMode="contain"
                                    style={{width: 32, height: 25, opacity: 0}}
                                    source={require('../clear.png')}/>
        </View>        
        <ScrollView 
-       contentContainerStyle={{flexGrow: 1}}
-      keyboardShouldPersistTaps='always'  showsHorizontalScrollIndicator={false}
-                                                         showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps='always'  
                                                          automaticallyAdjustContentInsets={false}
                                                          directionalLockEnabled={true}
                                                          bounces={false}
                                                          scrollsToTop={false}>
-        <TouchableWithoutFeedback onPress={()=> this.props.navigation.navigate('FAQ',)}>
-       <View >
-       <Text style={{fontFamily: 'camptonBold', fontSize: 18, color: 'white', marginTop: 28,
-       marginLeft: 22}}>
-           FAQ
-       </Text></View></TouchableWithoutFeedback>
-       <View style={{width: '100%', marginTop: 17, backgroundColor: '#232020', height: 2}}>
-       </View>
-       <TouchableWithoutFeedback onPress={()=> this.props.navigation.navigate('ContactUs',)}>
-       <View >
-       <Text style={{fontFamily: 'camptonBold', fontSize: 18, color: 'white', marginTop: 25,
-       marginLeft: 22}}>
-           Contact us
-       </Text></View></TouchableWithoutFeedback>
-       <View style={{width: '100%', marginTop: 17, backgroundColor: '#232020', height: 2,
-       marginLeft: 22}}>
-       </View>
-       <TouchableWithoutFeedback onPress={()=> this.props.navigation.navigate('AppInfo',)}>
-       <View >
-       <Text style={{fontFamily: 'camptonBold', fontSize: 18, color: 'white', marginTop: 25,
-       marginLeft: 22}}>
-           App Info
-       </Text></View></TouchableWithoutFeedback>
-       <View style={{width: '100%', marginTop: 17, backgroundColor: '#232020', height: 2}}>
-       </View>
-       </ScrollView>
-       <View style={{width: '100%', height: 54, backgroundColor: 'black', 
-      alignItems: 'center', justifyContent: 'space-around', flexDirection: 'row',
-      borderTopColor: '#FCAA4A', borderTopWidth: 1}}>
-       <TouchableWithoutFeedback  onPress={this.homer.bind(this)}>
-       <View style={{flexDirection: 'column', width: 23, height: 29, 
-       justifyContent: 'space-around', alignItems: 'center'}}>
-        <Image style={{width: 20, height: 20, }} resizeMode="stretch"
-        source={require('../homew.png')}/>
-        <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: 'white'}}>HOME</Text>
-       </View></TouchableWithoutFeedback>
-     {/*  <TouchableWithoutFeedback  onPress={this.search.bind(this)}>
-       <View style={{flexDirection: 'column', width: 34, height: 29, 
-       justifyContent: 'space-around', alignItems: 'center'}}>
-        <Image style={{width: 20, height: 20, }} resizeMode="stretch"
-        source={require('../searcher.png')}/>
-        <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: 'white'}}>SEARCH</Text>
-       </View></TouchableWithoutFeedback>*/}
-       <TouchableWithoutFeedback onPress={this.account.bind(this)}>
-       <View style={{flexDirection: 'column', width: 40, height: 29, 
-       justifyContent: 'space-around', alignItems: 'center'}}>
-        <Image style={{width: 20, height: 20, }} resizeMode="stretch"
-        source={require('../acc.png')}/>
-        <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: 'white'}}>ACCOUNT</Text>
-       </View></TouchableWithoutFeedback>
-       <TouchableWithoutFeedback onPress={() =>
-                this.props.navigation.openDrawer()}>
-                <View style={{flexDirection: 'column', width: 40, height: 29, 
-       justifyContent: 'space-around', alignItems: 'center'}}>
-        <Image style={{width: 30, height: 8, }} resizeMode="stretch"
-        source={require('../moreY.png')}/>
-        <Text style={{fontFamily: 'camptonBold', fontSize: 7, color: '#FCAA4A'}}>MORE</Text>
-       </View></TouchableWithoutFeedback>
-      </View>
+        <View style={{marginTop: 54, alignSelf: 'center',
+        width: '95%', height: 38, backgroundColor: '#E9DFDF', borderRadius: 3,
+        flexDirection: 'row', alignItems: 'center', justifyContent:'space-between'}}>
+        <TextInput            returnKeyType={'next'}
+        placeholder="Name"
+        underlineColorAndroid={'transparent'}
+        placeholderStyle={{fontSize: 13, fontFamily: 'camptonBold'}}
+        placeholderTextColor="#6D6868"
+        style={{
+                                           alignSelf: 'center',
+                                           height: 35,
+                                           width: '100%',
+                                           backgroundColor: 'transparent',
+                                           fontSize: 13, fontFamily: 'camptonBold', color: '#6D6868',
+                                           paddingLeft: 11, paddingRight: 11, 
+                                       }}/>
+        </View>
+        <View style={{marginTop: 39, alignSelf: 'center',
+        width: '95%', height: 38, backgroundColor: '#E9DFDF', borderRadius: 3,
+        flexDirection: 'row', alignItems: 'center', justifyContent:'space-between'}}>
+        <TextInput            returnKeyType={'next'}
+        placeholder="Email"
+        underlineColorAndroid={'transparent'}
+        placeholderStyle={{fontSize: 13, fontFamily: 'camptonBold'}}
+        placeholderTextColor="#6D6868"
+        style={{
+                                           alignSelf: 'center',
+                                           height: 35,
+                                           width: '100%',
+                                           backgroundColor: 'transparent',
+                                           fontSize: 13, fontFamily: 'camptonBold', color: '#6D6868',
+                                           paddingLeft: 11, paddingRight: 11, 
+                                       }}/>
+        </View>  
+        <TextInput
+        placeholder="Message"
+        multiline={true}
+        underlineColorAndroid={'transparent'}
+        placeholderStyle={{fontSize: 13, fontFamily: 'camptonBold'}}
+        placeholderTextColor="#6D6868"
+        style={{
+                                           alignSelf: 'center',
+                                      //     height: 250,
+                                           width: '95%',
+                                           backgroundColor: 'transparent',
+                                           fontSize: 13, fontFamily: 'camptonBold', color: '#6D6868',
+                                           paddingLeft: 11, paddingRight: 11, marginTop: 39,
+                                           backgroundColor: '#E9DFDF', borderRadius: 3,
+                                       }}/>
+        <TouchableWithoutFeedback>
+                <View style={{backgroundColor: '#FCAA4A', width: 98, height: 27, 
+         alignSelf: 'center', justifyContent: 'center', marginTop: 57, marginBottom: 20}}>
+         <Text style={{fontFamily: 'camptonBold', fontSize: 14, 
+         color: '#000', alignSelf: 'center'}}>SUBMIT</Text>
+         </View></TouchableWithoutFeedback>      
+                        </ScrollView>
       </View>
     );
   }
 }
-const Help = connect(mapStateToProps, mapDispatchToProps)(reduxHelp);
-export default Help;
+const ContactUs = connect(mapStateToProps, mapDispatchToProps)(reduxContactUs);
+export default ContactUs;
 const styles = StyleSheet.create({
 });

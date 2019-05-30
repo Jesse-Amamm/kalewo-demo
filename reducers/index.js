@@ -3,7 +3,7 @@ import{TRUE_HOME, TRUE_SEARCH,
     TRUE_HELP, FALSE_HELP, FALSE_HOME, FALSE_MyList,
     TRUE_LOGGEDIN, TRUE_MyList, 
     FALSE_LOGGEDIN, FALSE_SEARCH, TRUE_MORE, FALSE_MORE,
-    FALSE_ACCOUNT, FALSE_NOT, TRUE_NOT} from "../constants/action-types";
+    FALSE_ACCOUNT, FALSE_NOT, TRUE_NOT, setPP} from "../constants/action-types";
 const initialState = {
     more: false,
     home: true,
@@ -12,7 +12,8 @@ const initialState = {
     myList: false,
     help: false,
     loggedIn: false,
-    not: false
+    not: false,
+    PP: ''
 };
 const rootReducer = (state = initialState, action) => {
     switch (action.type){
@@ -96,6 +97,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 loggedIn: false
             };
+        case setPP:
+            return{
+                ...state,
+                PP: action.payload
+            };    
         default:
             return state
     }

@@ -264,7 +264,7 @@ class reduxDescribed extends Component {
               )}
             </View>
           </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback onPress={this.search.bind(this)}>
+       {/*   <TouchableWithoutFeedback onPress={this.search.bind(this)}>
             <View
               style={{
                 flexDirection: "column",
@@ -309,7 +309,7 @@ class reduxDescribed extends Component {
                 </Text>
               )}
             </View>
-          </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback> */}
           <TouchableWithoutFeedback onPress={this.account.bind(this)}>
             <View
               style={{

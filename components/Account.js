@@ -28,6 +28,7 @@ import {
   falseNot
 } from "../actions/index";
 const api_key = '114063_a93666d11c33ea8dccac';
+
 var SharedPreferences = require("react-native-shared-preferences");
 
 const mapStateToProps = state => {
@@ -39,7 +40,8 @@ return {
     myList: state.myList,
     help: state.help,
     loggedIn: state.loggedIn,
-    not: state.not
+    not: state.not,
+    PP: state.PP
 };
 };
 const mapDispatchToProps = dispatch => {
@@ -92,6 +94,54 @@ class reduxAccount extends Component{
       console.log("kl"+ JSON.stringify(error));
     });
   }
+  otherlistGet(token){
+    var config = {
+      headers: {'Authorization': "Bearer " + token}
+    };
+    axios
+    .get("http://app.kalewo.ng/api/getlistitems/"+this.state.id,
+    config)
+    .then(response => {
+      console.log(response);
+      var len = response.data ? response.data.data.length : null;
+   //   console.log(len+"--len");
+      for(let i = 0;i<len;i++){
+        console.log(response.data.data[i].resource_id+" ::resource_id");
+        axios
+        .get("http://api.dacast.com/v2/vod/"+response.data.data[i].resource_id+"?apikey=" + api_key + "&_format=JSON")
+        .then(response => {
+         console.log(response);
+         var len = response.data ? response.data.length : null;
+         console.log(len+"<<<len");
+         let row = response.data;
+         this.setState(
+          prevState => ({
+            list: [...prevState.list, row]
+          }),
+         );
+        })
+        .catch(error => {
+       //   this.setState({ regLoader: false });
+          Alert.alert("Error", 'get vod error', [
+            { text: "OK" }
+          ]);
+          console.log(JSON.stringify(error));
+        });
+      }
+  /*    this.props.navigation.navigate("Described", {token: response.data.success.token,
+      id: response.data.success.id});*/
+      this.setState({regLoader: false});
+    })
+    .catch(error => {
+      this.setState({regLoader: false});
+      Alert.alert(
+        "Error",
+        "get list items error"+JSON.stringify(error.response.data.error),
+        [{ text: "OK" }]
+      );
+      console.log(JSON.stringify(error.response.data.error));
+    });
+  }
   componentDidMount() {
     this.setState({regLoader: true});
     SharedPreferences.getItem("key2", function(value){
@@ -101,7 +151,9 @@ class reduxAccount extends Component{
     }.bind(this));
   SharedPreferences.getItem("key1", function(value){
       if(value){
+     //   this.setState({regLoader: true})
       this.listGet(value)
+      this.otherlistGet(value)
       this.setState({token: value}, );
       }   
     }.bind(this));
@@ -117,7 +169,8 @@ constructor(props) {
     token: '',
     id: '',
     regLoader: false,
-    userDetail: []
+    userDetail: [],
+    list: []
   };
 }
 homer(){
@@ -142,7 +195,58 @@ search(){
 }
 
   render() {
-    
+    const list = (
+      <FlatList
+      data={this.state.list}
+      horizontal={true}
+      renderItem={({ item, index }) => (
+        <TouchableWithoutFeedback
+          onPress={() =>
+            this.props.navigation.navigate("Selection", {
+              title: item.title,
+              image: item.pictures.thumbnail[0],
+              description: item.description,
+              more: this.state.list,
+              uri: item.share_code.facebook,
+              duration: item.duration,
+              id: item.id
+            })
+          }
+        >
+          <View style={{ width: 111, height: 168, marginLeft: 11 }}>
+            {item.pictures.thumbnail[0] ? (
+              <Image
+                style={{ width: 111, height: 168 }}
+                resizeMode="cover"
+                source={{ uri: item.pictures.thumbnail[0] }}
+              />
+            ) : (
+              <Image
+                style={{ width: 111, height: 168 }}
+                resizeMode="cover"
+                source={require("../thisit.png")}
+              />
+            )}
+          </View>
+        </TouchableWithoutFeedback>
+      )}
+      
+      keyExtractor={(item, index) => `list-item-${index}`}
+    /> 
+    );
+    let picture = '';
+    if(this.props.PP){
+      picture = <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
+      source={{uri: this.props.PP}}/>
+    }else{
+      if(this.state.userDetail[0]){
+        picture = <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
+        source={{uri: this.state.userDetail[0].photo}}/>
+      }else{
+        picture = <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
+        source={require('../user.png')}/>
+      }
+    }
     return (
       
         <View style={{flex: 1, backgroundColor: '#000'}}>
@@ -173,18 +277,19 @@ search(){
                                                          directionalLockEnabled={true}
                                                          bounces={false}
                                                          scrollsToTop={false}>
+                                                         
        <View style={{width: 169, height:169,borderRadius: 84.5, backgroundColor: 'transparent', 
        borderColor: '#FCAA4A', borderWidth: 1, marginTop: 29,
        alignSelf: 'center', justifyContent: 'center', }}>
-       <Image style={{width: 142, height:142,borderRadius: 71,alignSelf: 'center' }} resizeMode="cover"
-        source={require('../user.png')}/>
+       {picture}
        </View>
        <TouchableWithoutFeedback onPress={() =>
                 this.props.navigation.navigate('EditProfile', {
                   name: this.state.userDetail[0].name,
                   email: this.state.userDetail[0].email,
                   phone: this.state.userDetail[0].phone,
-                  token: this.state.token
+                  token: this.state.token,
+                  photo: this.state.userDetail[0].photo
                 }
                 )}>
        <View style={{position: 'absolute', top: 24, right: 42,
@@ -216,38 +321,19 @@ search(){
         Premium Membership
         </Text>
        </View>
+       <TouchableWithoutFeedback onPress={()=>this.props.navigation.navigate('ResetPassword',{})}>
        <View style={{marginTop: 9, backgroundColor: '#FCAA4A', width: 80, height: 15, 
        alignSelf: 'center', justifyContent: 'center', alignItems: 'center'}}>
         <Text style={{color: 'black', fontFamily: 'camptonLight', fontSize: 9}}>
         Reset Password
         </Text>
-       </View>
+       </View></TouchableWithoutFeedback>
        <Text style={{fontFamily: 'camptonBold', color: '#FCAA4A', fontSize: 12, marginLeft: 16, 
       marginBottom: 9, marginTop: 24}}>
       MY LIST
       </Text>
-      <ScrollView horizontal={true}
-      keyboardShouldPersistTaps='always'  showsHorizontalScrollIndicator={false}
-                                                       overScrollMode={'never'}
-                                                         showsVerticalScrollIndicator={false}
-                                                         automaticallyAdjustContentInsets={false}
-                                                         directionalLockEnabled={true}
-                                                         bounces={false}
-                                                         scrollsToTop={false}>
-         <View style={{width: 111, height: 168, marginLeft: 22}}>
-        <Image style={{width: 111, height: 168, }} resizeMode="stretch"
-        source={require('../big.png')}/></View>
-        <View style={{width: 111, height: 168, marginLeft: 11}}>
-        <Image style={{width: 111, height: 168, }} resizeMode="stretch"
-        source={require('../thisit.png')}/></View>
-        <View style={{width: 111, height: 168, marginLeft: 11}}>
-        <Image style={{width: 111, height: 168, }} resizeMode="stretch"
-        source={require('../wp.png')}/></View>
-        <View style={{width: 111, height: 168, marginLeft: 11}}>
-        <Image style={{width: 111, height: 168, }} resizeMode="cover"
-        source={require('../wp.png')}/></View>
-                                                         </ScrollView>
-       <Text style={{fontFamily: 'camptonBold', color: '#FCAA4A', fontSize: 12, marginLeft: 16, 
+      {list}
+     {/*  <Text style={{fontFamily: 'camptonBold', color: '#FCAA4A', fontSize: 12, marginLeft: 16, 
       marginBottom: 9, marginTop: 12}}>
        SUGGESTIONS
       </Text>
@@ -271,7 +357,7 @@ search(){
         <View style={{width: 111, height: 168, marginLeft: 11}}>
         <Image style={{width: 111, height: 168, }} resizeMode="cover"
         source={require('../wp.png')}/></View>
-                                                         </ScrollView>                                                 
+                                                         </ScrollView>  */}                                               
        </ScrollView>
       </View>
     );
